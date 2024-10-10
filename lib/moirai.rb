@@ -1,4 +1,8 @@
-module Moirai
-end
+# frozen_string_literal: true
 
-require "moirai/data"
+require "moirai/version"
+require "moirai/engine"
+
+module Moirai
+  # Your code goes here...
+end

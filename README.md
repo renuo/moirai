@@ -1,33 +1,42 @@
-# Moirai
+# 🧵 Moirai
 
 #### Manage translation strings in real time
 
-## Installation
+- Non devs to manage translations
+- View in real time on your application
+- Create PRs based on changes
 
+## Usage
+How to use my plugin.
+
+## Installation
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'moirai', github: 'renuo/moirai'
+gem "moirai"
 ```
 
 And then execute:
-
-    $ bundle install
+```bash
+$ bundle
+```
 
 Or install it yourself as:
-
-    $ gem install moirai
-
-## Usage
-
-
+```bash
+$ gem install moirai
+```
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies.
 Then, set your environment variables using a `.env` file.
-Then, run `bundle exec rspec` to run the tests.
+Then, run `bin/check` to run the tests.
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+You can view the engine in a dummy app by heading to the `test/dummy` folder and running `bin/rails s` 
+
+## License
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Copyright
 

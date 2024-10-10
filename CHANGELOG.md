@@ -1,6 +1,6 @@
-## 0.0.0 
+## 0.1.0 
 
-* Gem created ([@oliveranthony17][])
+* Gem structure created ([@oliveranthony17][])
 
 [@coorasse]: https://github.com/coorasse
 
