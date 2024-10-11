@@ -2,10 +2,16 @@
 
 set -e
 
-if ! bundle exec rubocop -D -c .rubocop.yml --fail-fast
+if ! bundle exec standardrb
 then
-  echo 'rubocop detected issues!'
-  bundle exec rubocop -a -D -c .rubocop.yml
-  echo 'Tried to auto correct the issues, but must be reviewed manually, commit aborted'
+  echo '\n Standard detected issues! Attempting to fix...'
+
+  if ! bundle exec standardrb --fix
+  then
+    echo '\n Tried to auto correct the issues, but some must be reviewed manually. Commit aborted.'
+    exit 1
+  fi
+
+  echo '\n Auto-corrected issues, but you should review changes before committing.'
   exit 1
 fi

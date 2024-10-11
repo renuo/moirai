@@ -1,8 +1,0 @@
-inherit_gem:
-  renuocop: config/base.yml
-
-require:
-  - rubocop-minitest
-
-Rails/RefuteMethods:
-  Enabled: false

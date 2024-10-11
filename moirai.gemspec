@@ -23,11 +23,8 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # TODO: not sure about required ruby version?
   spec.required_ruby_version = ">= 2.6.0"
   spec.add_dependency "rails", ">= 7.2.1"
-  spec.add_development_dependency "minitest"
-  spec.add_development_dependency "rake"
 
   spec.license = "MIT"
   spec.metadata["rubygems_mfa_required"] = "true"
