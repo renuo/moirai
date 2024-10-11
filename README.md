@@ -1,15 +1,16 @@
 # 🧵 Moirai
 
-#### Manage translation strings in real time
+### Manage translation strings in real time
 
-- Non devs to manage translations
-- View in real time on your application
-- Create PRs based on changes
+- Let your non-developer team members finally manage translations (yes, even Karen from marketing).
+- See those translations live in your app, so you can make sure “Submit” isn’t overlapping the button where “Do not press this button EVER” should be.
+- Automatically create PRs based on these changes, saving your developers from yet another “small tweak” email request.
 
-## Usage
-How to use my plugin.
+>Let the world be translated, one typo at a time.
+
 
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -25,6 +26,18 @@ Or install it yourself as:
 ```bash
 $ gem install moirai
 ```
+
+Mount the engine in your `config/routes.rb`:
+
+```ruby
+mount Moirai::Engine => '/moirai', as: 'moirai'
+```
+
+and run `bin/rails db:migrate`.
+
+## Usage
+
+... Actual details of how to use the engine should go here.
 
 ## Development
 
