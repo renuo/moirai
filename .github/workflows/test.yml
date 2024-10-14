@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     env:
-      BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}.gemfile
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
     
     steps:
       - name: Checkout code
