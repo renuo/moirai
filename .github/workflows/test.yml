@@ -28,7 +28,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
+      - name: Install bundle
+        run: |
+          gem install bundler
+          bundle lock --add-platform x86_64-linux
+        
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
