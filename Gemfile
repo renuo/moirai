@@ -4,12 +4,9 @@ source "https://rubygems.org"
 
 gemspec
 
-group :development do
+group :development, :test do
   gem "puma"
   gem "sqlite3"
-end
-
-group :development, :test do
   gem "minitest"
   gem "rake"
   gem "standard"

@@ -4,21 +4,13 @@ source "https://rubygems.org"
 
 gem "rails", "~> 7.2"
 
-group :development do
+group :development, :test do
   gem "puma"
   gem "sqlite3"
-end
-
-group :development, :test do
   gem "minitest"
   gem "rake"
   gem "standard"
   gem "appraisal"
-end
-
-platforms :ruby do
-  gem "sqlite3"
-  gem "puma"
 end
 
 gemspec path: "../"
