@@ -10,7 +10,7 @@ group :development do
 end
 
 group :development, :test do
+  gem "minitest"
   gem "rake"
   gem "standard"
-  gem "minitest"
 end
