@@ -9,24 +9,26 @@ env:
 jobs:
   tests:
     name: Test
-    runs-on: ubuntu-latest
     
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest]
         ruby: [2.7, 3.0, 3.1, 3.2, 3.3]
         gemfile: ['gemfiles/rails_6_1.gemfile',
                   'gemfiles/rails_7_0.gemfile',
                   'gemfiles/rails_7_1.gemfile',
                   'gemfiles/rails_7_2.gemfile']
     
+    runs-on: ${{ matrix.os }}
+    
     env:
-      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
-      
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
+    
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      
+        uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
