@@ -29,17 +29,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Install bundle
+#      - name: Set up Ruby
+#        uses: ruby/setup-ruby@v1
+#        with:
+#          ruby-version: ${{ matrix.ruby }}
+#          bundler-cache: true
+      
+      - name: Install Ruby
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common
+          sudo apt-add-repository ppa:brightbox/ruby-ng
+          sudo apt-get update
+          sudo apt-get install ruby-${{ matrix.ruby }} # Adjust this for macOS if needed
+          ruby --version
+      
+      - name: Install Bundler
         run: |
           gem install bundler
-          bundle lock --add-platform x86_64-linux
-        
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-          
+          bundle --version
+      
       - name: Add platforms to Gemfile.lock
         run: |
           bundle lock --add-platform x86_64-linux
