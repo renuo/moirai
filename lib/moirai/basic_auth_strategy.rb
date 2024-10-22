@@ -1,7 +1,5 @@
 module Moirai
-  class BasicAuthStrategy
-    include Moirai::AuthenticationStrategy
-
+  class BasicAuthStrategy < Moirai::AuthenticationStrategy
     def authenticate(request)
       return true if ENV["MOIRAI_BASICAUTH_NAME"].blank? || ENV["MOIRAI_BASICAUTH_PASSWORD"].blank?
 

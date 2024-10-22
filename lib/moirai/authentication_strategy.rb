@@ -1,5 +1,5 @@
 module Moirai
-  module AuthenticationStrategy
+  class AuthenticationStrategy
     def authenticate(request)
       raise NotImplementedError, "Subclasses must implement the `authenticate` method"
     end
