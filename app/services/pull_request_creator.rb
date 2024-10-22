@@ -1,4 +1,4 @@
-require 'octokit' unless defined? Octokit
+require 'octokit'
 
 class PullRequestCreator
   BRANCH_NAME = 'moirai-translations'
