@@ -1,0 +1,19 @@
+<h1><%= @file_path %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <td>Key</td>
+      <td>Value</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @translation_keys.each do |key, value| %>
+      <tr>
+        <td><%= key %><td>
+        <td><%= value %><td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
