@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema[7.2].define(version: 2024_10_22_085549) do
   create_table "moirai_translations", force: :cascade do |t|
+    t.string "file_path", null: false
     t.string "locale", null: false
     t.string "key", null: false
     t.text "value"
