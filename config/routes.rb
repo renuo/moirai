@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Moirai::Engine.routes.draw do
-  root to: "pages#index"
+  root to: "translation_files#index"
 
   resources :translation_files, only: %i[index show], as: "moirai_translation_files"
   post "/translation_files/open_pr", to: "translation_files#open_pr", as: "moirai_open_pr"
