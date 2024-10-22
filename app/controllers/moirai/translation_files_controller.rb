@@ -48,14 +48,14 @@ module Moirai
     def handle_create
       translation_from_file = parse_file(@decoded_path)
       if translation_from_file[translation_params[:key]] == translation_params[:value]
-        flash.alert = "Translation already exists."
+        flash.alert = "Translation #{translation_params[:key]} already exists."
         redirect_to translation_file_path(Digest::SHA256.hexdigest(translation_params[:file_path]))
         return
       end
 
       translation = Translation.new(translation_params)
       if translation.save
-        flash.notice = "Translation was successfully created."
+        flash.notice = "Translation #{translation.key} was successfully created."
       else
         flash.alert = translation.errors.full_messages.join(", ")
       end
