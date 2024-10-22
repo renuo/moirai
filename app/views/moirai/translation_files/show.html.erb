@@ -1,27 +1,33 @@
-<h1><%= @file_path %></h1>
+<main>
+  <h1>Update translations</h1>
 
-<table>
-  <thead>
-    <tr>
-      <td>Key</td>
-      <td>Value</td>
-      <td></td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @translation_keys.each do |key, value| %>
+  <p>
+  <bold><%= @file_path %></bold><br>
+  <%= link_to 'Back', translation_files_path %>
+  </p>
+
+  <table>
+    <thead>
       <tr>
-        <td><%= key %></td>
-        <td>
-          <%= form_for Moirai::Translation.new, url: create_or_update_translation_path do |f| %>
-            <%= f.hidden_field :key, value: key %>
-            <%= f.hidden_field :file_path, value: @decoded_path %>
-            <%= f.hidden_field :locale, value: I18n.locale %>
-            <%= f.text_field :value, value: Moirai::Translation.find_by(key: key, file_path: @decoded_path, locale: I18n.locale)&.value || value %>
-            <%= f.submit 'Update' %>
-          <% end %>
-        </td>
+        <td>Key</td>
+        <td>Value</td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @translation_keys.each do |key, value| %>
+        <tr>
+          <td><%= key %></td>
+          <td>
+            <%= form_for Moirai::Translation.new, url: create_or_update_translation_path do |f| %>
+              <%= f.hidden_field :key, value: key %>
+              <%= f.hidden_field :file_path, value: @decoded_path %>
+              <%= f.hidden_field :locale, value: I18n.locale %>
+              <%= f.text_field :value, value: Moirai::Translation.find_by(key: key, file_path: @decoded_path, locale: I18n.locale)&.value || value %>
+              <%= f.submit 'Update', style: 'display: none;' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</main>
