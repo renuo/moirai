@@ -3,6 +3,7 @@
 module Moirai
   class ApplicationController < ActionController::Base
     before_action :authenticate, if: :basic_auth_present?
+
     def authenticate
       if basic_auth_present?
         authenticate_or_request_with_http_basic do |name, password|
@@ -10,11 +11,11 @@ module Moirai
         end
       end
     end
-  end
 
-  private
+    private
 
-  def basic_auth_present?
-    ENV["MOIRAI_BASICAUTH_NAME"].present? && ENV["MOIRAI_BASICAUTH_PASSWORD"].present?
+    def basic_auth_present?
+      ENV["MOIRAI_BASICAUTH_NAME"].present? && ENV["MOIRAI_BASICAUTH_PASSWORD"].present?
+    end
   end
 end
