@@ -24,11 +24,6 @@ And then execute:
 bundle
 ```
 
-Or install it yourself as:
-```bash
-gem install moirai
-```
-
 Mount the engine in your `config/routes.rb`:
 
 ```ruby
@@ -38,22 +33,22 @@ mount Moirai::Engine => '/moirai', as: 'moirai'
 Next, you need to run the generator which will create the necessary files including the database migration:
 
 ```bash
-rails generate moirai:install
+bin/rails g moirai:install
 ```
 
 Then run:
 
 ```bash
-rails db:migrate
+bin/rails db:migrate
 ```
 
 ## Usage
 
 ### How to change translations
 
-Head to your application and navigate to `/moirai`. You will be greeted with a list of all the translations in your application...
+Here you will find a list of all the files containing texts that can be translated.
 
-`# TODO: Daniel? to give more details`
+Simply change the value and press ENTER to update the translation and see it immediately changed on the application.
 
 ### Automatic PR creation with Octokit (**optional**)
 
@@ -110,9 +105,19 @@ You can also run `bin/console` for an interactive prompt that will allow you to 
 
 You can view the engine in a dummy app by heading to the `test/dummy` folder and running `bin/rails s` 
 
+## TODO
+
+* Support for HTML
+* Support for interpolation
+* Support for count variants
+* Better inline editing tool
+* Support for relative keys in the inline editing tool
+* Performance of translations lookup
+* Support for translations and strings coming from other gems
+
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Copyright
 
-Coypright [Renuo AG](https://www.renuo.ch/).
+Copyright [Renuo AG](https://www.renuo.ch/).
