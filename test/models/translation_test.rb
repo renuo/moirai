@@ -1,10 +1,10 @@
-require 'test_helper'
+require "test_helper"
 
 module Moirai
   class TranslationTest < ActiveSupport::TestCase
     def setup
-      @valid_translation = Translation.new(key: 'hello', locale: 'en', file_path: '/valid/path/to/file')
-      @invalid_translation = Translation.new(key: 'hello', locale: 'en', file_path: '/invalid/path/to/file')
+      @valid_translation = Translation.new(key: "hello", locale: "en", file_path: "/valid/path/to/file")
+      @invalid_translation = Translation.new(key: "hello", locale: "en", file_path: "/invalid/path/to/file")
     end
 
     test "should be valid with valid attributes" do
