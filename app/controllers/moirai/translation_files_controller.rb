@@ -19,8 +19,8 @@ module Moirai
 
     def create_or_update
       if (translation = Translation.find_by(file_path: translation_params[:file_path],
-                                            key: translation_params[:key],
-                                            locale: translation_params[:locale]))
+        key: translation_params[:key],
+        locale: translation_params[:locale]))
         handle_update(translation)
       else
         handle_create
@@ -30,13 +30,13 @@ module Moirai
     def open_pr
       flash.notice = "I created an amazing PR"
       changes = [{
-                   path: 'README.md',
-                   content: "Changed!"
-                 },
-                 {
-                   path: 'README2.md',
-                   content: "New file!"
-                 }]
+        path: "README.md",
+        content: "Changed!"
+      },
+        {
+          path: "README2.md",
+          content: "New file!"
+        }]
       Moirai::PullRequestCreator.new.create_pull_request(changes)
       redirect_back_or_to(root_path)
     end
