@@ -21,12 +21,12 @@ gem "moirai"
 
 And then execute:
 ```bash
-$ bundle
+bundle
 ```
 
 Or install it yourself as:
 ```bash
-$ gem install moirai
+gem install moirai
 ```
 
 Mount the engine in your `config/routes.rb`:
@@ -38,13 +38,13 @@ mount Moirai::Engine => '/moirai', as: 'moirai'
 Next, you need to run the generator which will create the necessary files including the database migration:
 
 ```bash
-$ rails generator moirai:install
+rails generate moirai:install
 ```
 
 Then run:
 
 ```bash
-$ rails db:migrate
+rails db:migrate
 ```
 
 ## Usage
