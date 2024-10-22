@@ -1,9 +1,8 @@
 <h1>Translation files</h1>
 <ul>
-  <% @file_paths.each do |file| %>
-    <% file_hash = Digest::SHA256.hexdigest(file) %>
+  <% @files.each do |file| %>
     <li>
-      <%= link_to (file), translation_file_path(file_hash) %>
+      <%= link_to (file[:path]), translation_file_path(file[:id]) %>
     </li>
   <% end %>
 </ul>
