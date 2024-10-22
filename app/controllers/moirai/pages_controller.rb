@@ -20,8 +20,18 @@ module Moirai
     def flatten_hash(hash, parent_key = '', result = {})
       hash.each do |key, value|
         new_key = parent_key.empty? ? key.to_s : "#{parent_key}.#{key}"
-        if value.is_a?(Hash)
+        case value
+        when Hash
           flatten_hash(value, new_key, result)
+        when Array
+          value.each_with_index do |item, index|
+            array_key = "#{new_key}.#{index}"
+            if item.is_a?(Hash)
+              flatten_hash(item, array_key, result)
+            else
+              result[array_key] = item
+            end
+          end
         else
           result[new_key] = value
         end
