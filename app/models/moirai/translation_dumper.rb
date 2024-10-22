@@ -24,10 +24,9 @@ module Moirai
       translations.each do |translation|
         keys = [translation.locale] + translation.key.split(".")
 
-        yaml = {}
         node = original_yaml
 
-        for i in 0...keys.size
+        (0...keys.size).each do |i|
           key = keys[i]
           if i == keys.size - 1
             node[key] = translation.value
