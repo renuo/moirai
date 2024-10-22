@@ -3,11 +3,10 @@ require "digest"
 
 module Moirai
   class TranslationFilesController < ApplicationController
-    before_action :load_file_paths, only: [:index, :show, :create_or_update]
-    before_action :generate_file_hashes, only: [:index, :show, :create_or_update]
-    before_action :set_translation_file, only: [:show, :create_or_update]
-
     def index
+      load_file_paths
+      generate_file_hashes
+
       @files = @file_paths.map do |path|
         {
           id: Digest::SHA256.hexdigest(path),
@@ -18,12 +17,26 @@ module Moirai
     end
 
     def show
+      load_file_paths
+      generate_file_hashes
+      set_translation_file
+
       @translation_keys = parse_file(@decoded_path)
     end
 
     def create_or_update
+      load_file_paths
+      generate_file_hashes
+      set_translation_file
+
       if (translation = Translation.find_by(file_path: @decoded_path, key: translation_params[:key]))
-        translation.update(value: translation_params[:value])
+        if translation.update(value: translation_params[:value])
+          flash.notice = "Translation #{translation.key} was successfully updated."
+        else
+          flash.alert = translation.errors.full_messages.join(", ")
+        end
+
+        redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
         return
       end
 
@@ -33,6 +46,8 @@ module Moirai
       else
         flash.alert = translation.errors.full_messages.join(", ")
       end
+
+      redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
     end
 
     private
