@@ -26,7 +26,7 @@ class Moirai::PullRequestCreator
     end
 
     translations_array.each do |translation_hash|
-      update_file(translation_hash[:path], translation_hash[:content])
+      update_file(translation_hash[:file_path], translation_hash[:content])
     end
 
     unless pull_request_exists?

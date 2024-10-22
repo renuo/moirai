@@ -15,6 +15,11 @@ module Moirai
       flatten_hash(yaml_content[root_key])
     end
 
+    def get_first_key(file_path)
+      yaml_content = YAML.load_file(file_path)
+      yaml_content.keys.first
+    end
+
     private
 
     def load_file_paths
