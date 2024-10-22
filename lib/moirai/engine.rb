@@ -28,10 +28,10 @@ module Moirai
 
 
               render(partial: "moirai/translation_files/form",
-                     locals: {filepath: filepath,
-                              key: key,
-                              file_path: filepath,
-                              value: value})
+                locals: {filepath: filepath,
+                         key: key,
+                         file_path: filepath,
+                         value: value})
             else
               value
             end
