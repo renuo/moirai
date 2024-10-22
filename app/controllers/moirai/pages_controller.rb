@@ -4,7 +4,7 @@ module Moirai
   class PagesController < ApplicationController
     def index
       i18n_file_paths = I18n.load_path
-      yml_file_paths = i18n_file_paths.select { |path| path.end_with?(".yml") || path.end_with?(".yaml") }
+      yml_file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && (path.end_with?(".yml") || path.end_with?(".yaml") )}
       file_contents = yml_file_paths.map { |path| [path, parse_file(path)] }.to_h
       render json: file_contents
     end
