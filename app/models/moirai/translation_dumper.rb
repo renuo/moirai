@@ -1,5 +1,5 @@
 module Moirai
-  class TranslationUpdater
+  class TranslationDumper
     def call
       updated_translation_file_paths = Moirai::Translation.pluck(:file_path).uniq
 
