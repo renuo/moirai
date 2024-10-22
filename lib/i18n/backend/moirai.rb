@@ -10,7 +10,6 @@ module I18n
       end
 
       # This method receives a locale, a data hash and options for storing translations.
-      # Should be implemented
       def store_translations(filename, locale, data, options = EMPTY_HASH)
         original = super(locale, data, options)
         store_moirai_translations(filename, locale, data, options)
