@@ -6,10 +6,19 @@
   <%= csp_meta_tag %>
 
   <%= stylesheet_link_tag    "moirai/application", media: "all" %>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
 
-<%= yield %>
+  <% if notice.present? %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+
+  <% if alert.present? %>
+    <p class="notice">⚠️ <%= alert %></p>
+  <% end %>
+
+  <%= yield %>
 
 </body>
 </html>
