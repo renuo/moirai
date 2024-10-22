@@ -1,0 +1,13 @@
+it:
+  locales:
+    german: Tedesco
+    italian: Italiano
+    english: Inglese
+  first_paragraph: Questa è l'applicazione moirai dummy per i test. Cambi la lingua dalla barra di navigazione.
+  second_paragraph: La lingua di riserva è l'inglese. I seguenti pulsanti sono stati definiti solo in una lingua
+  buttons:
+    very:
+      much:
+        nested:
+          value: Cliccami
+          only_italian: Solo italiano

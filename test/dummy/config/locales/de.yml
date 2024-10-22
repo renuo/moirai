@@ -1,0 +1,13 @@
+de:
+  locales:
+    german: Deutsch
+    italian: Italienisch
+    english: Englisch
+  first_paragraph: Dies ist eine Dummy-App von moirai zum Testen. Wechseln Sie die Sprache über die Navigationsleiste.
+  second_paragraph: Fallback-Sprache ist Englisch. Die folgenden Schaltflächen wurden nur in einer Sprache definiert
+  buttons:
+    very:
+      much:
+        nested:
+          value: Klick mich
+          only_german: Nur Deutsch
