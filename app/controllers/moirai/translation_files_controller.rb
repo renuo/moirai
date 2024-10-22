@@ -2,15 +2,6 @@ module Moirai
   class TranslationFilesController < ApplicationController
     before_action :load_file_handler, only: [:index, :show, :create_or_update]
     before_action :set_translation_file, only: [:show, :create_or_update]
-    before_action :authenticate, if: :basic_auth_present?
-
-    def authenticate
-      if basic_auth_present?
-        authenticate_or_request_with_http_basic do |name, password|
-          name == ENV["MOIRAI_BASICAUTH_NAME"] && password == ENV["MOIRAI_BASICAUTH_PASSWORD"]
-        end
-      end
-    end
 
     def index
       @files = @file_handler.file_paths.map do |path|
@@ -20,10 +11,6 @@ module Moirai
           path: path
         }
       end
-    end
-
-    def basic_auth_present?
-      ENV["MOIRAI_BASICAUTH_NAME"].present? && ENV["MOIRAI_BASICAUTH_PASSWORD"].present?
     end
 
     def show
