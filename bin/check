@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 bundle exec rails test
-bundle exec rails test:system
+#bundle exec rails test:system

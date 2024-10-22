@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 6.1"
   spec.add_development_dependency "capybara"
   spec.add_development_dependency "selenium-webdriver"
+  spec.add_development_dependency "rails", "~> 7.2.0"
 
   spec.license = "MIT"
   spec.metadata["rubygems_mfa_required"] = "true"
