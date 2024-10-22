@@ -16,7 +16,7 @@ module Moirai
     # https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/translation_helper.rb#L122
     initializer "moirai.override_translation_helper" do
       ActiveSupport.on_load(:action_view) do
-        module ActionView::Helpers::TranslationHelper
+        module ActionView::Helpers::TranslationHelper # rubocop:disable Lint/ConstantDefinitionInBlock
           alias_method :original_translate, :translate
 
           def translate(key, **options)
