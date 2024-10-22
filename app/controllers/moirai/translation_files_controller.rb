@@ -17,9 +17,8 @@ module Moirai
     end
 
     def show
-      file_path = @file_hashes[params[:id]]
-      decoded_path = CGI.unescape(file_path)
-      @file_path = file_path
+      @file_path = @file_hashes[params[:id]]
+      decoded_path = CGI.unescape(@file_path)
       @translation_keys = parse_file(decoded_path)
     end
 
