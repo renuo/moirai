@@ -7,7 +7,7 @@ module Moirai
     before_action :generate_file_hashes, only: [:index, :show]
 
     def index
-      @files = @file_paths.map do |path| 
+      @files = @file_paths.map do |path|
         {
           id: Digest::SHA256.hexdigest(path),
           name: File.basename(path),
