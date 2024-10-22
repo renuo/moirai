@@ -1,13 +1,17 @@
 module Moirai
   class TranslationDumper
     def call
+      project_root = Rails.root.to_s
       Moirai::Translation.pluck(:file_path).uniq.map do |file_path|
+        absolute_file_path = File.expand_path(file_path, project_root)
+        next unless absolute_file_path.start_with?(project_root)
+
         updated_file_contents = get_updated_file_contents(file_path)
         {
-          file_path: file_path,
+          file_path: file_path.sub("#{project_root}/", ''),
           content: updated_file_contents
         }
-      end
+      end.compact
     end
 
     private
