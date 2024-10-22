@@ -1,0 +1,4 @@
+<% @file_paths.each do |file| %>
+  <% file_hash = Digest::SHA256.hexdigest(file) %>
+  <%= link_to File.basename(file), translation_file_path(file_hash) %>
+<% end %>
