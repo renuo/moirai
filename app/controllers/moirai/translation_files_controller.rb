@@ -1,12 +1,9 @@
-require "cgi"
-require "digest"
-
 module Moirai
   class TranslationFilesController < ApplicationController
-    def index
-      load_file_paths
-      generate_file_hashes
+    before_action :load_file_paths_and_hashes, only: [:index, :show, :create_or_update]
+    before_action :set_translation_file, only: [:show, :create_or_update]
 
+    def index
       @files = @file_paths.map do |path|
         {
           id: Digest::SHA256.hexdigest(path),
@@ -17,18 +14,10 @@ module Moirai
     end
 
     def show
-      load_file_paths
-      generate_file_hashes
-      set_translation_file
-
       @translation_keys = parse_file(@decoded_path)
     end
 
     def create_or_update
-      load_file_paths
-      generate_file_hashes
-      set_translation_file
-
       if (translation = Translation.find_by(file_path: translation_params[:file_path], key: translation_params[:key], locale: translation_params[:locale]))
         handle_update(translation)
       else
@@ -81,6 +70,11 @@ module Moirai
 
     def translation_params
       params.require(:translation).permit(:key, :locale, :value, :file_path)
+    end
+
+    def load_file_paths_and_hashes
+      load_file_paths
+      generate_file_hashes
     end
 
     def load_file_paths
