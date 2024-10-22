@@ -13,8 +13,10 @@
       <tr>
         <td><%= key %></td>
         <td>
-          <%= form_for Moirai::Translation.new, url: translation_files_path do |f| %>
+          <%= form_for Moirai::Translation.new, url: create_or_update_translation_path do |f| %>
             <%= f.hidden_field :key, value: key %>
+            <%= f.hidden_field :file_path, value: @decoded_path %>
+            <%= f.hidden_field :locale, value: I18n.locale %>
             <%= f.text_field :value, value: value %>
             <%= f.submit 'Update' %>
           <% end %>

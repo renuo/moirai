@@ -3,8 +3,9 @@ require "digest"
 
 module Moirai
   class TranslationFilesController < ApplicationController
-    before_action :load_file_paths, only: [:index, :show]
-    before_action :generate_file_hashes, only: [:index, :show]
+    before_action :load_file_paths, only: [:index, :show, :create_or_update]
+    before_action :generate_file_hashes, only: [:index, :show, :create_or_update]
+    before_action :set_translation_file, only: [:show, :create_or_update]
 
     def index
       @files = @file_paths.map do |path|
@@ -17,21 +18,34 @@ module Moirai
     end
 
     def show
-      @file_path = @file_hashes[params[:id]]
-      decoded_path = CGI.unescape(@file_path)
-      @translation_keys = parse_file(decoded_path)
+      @translation_keys = parse_file(@decoded_path)
     end
 
-    def update
-      # params: key, path, locale, value
-      # check if the file exists
-      # check if the key exists in the parsed file
-      # check if the key exists in the TransaltionModel
-      # if it does, update the value in the record
-      # if it doesn't, create the record
+    def create_or_update
+      if (translation = Translation.find_by(file_path: @decoded_path, key: translation_params[:key]))
+        translation.update(value: translation_params[:value])
+        return
+      end
+
+      translation = Translation.new(translation_params)
+      if translation.save
+        flash.notice = "Translation was successfully created."
+      else
+        flash.alert = translation.errors.full_messages.join(", ")
+      end
     end
 
     private
+
+    def set_translation_file
+      @file_path = @file_hashes[params[:id]]
+      @decoded_path = CGI.unescape(@file_path)
+    end
+
+
+    def translation_params
+      params.require(:translation).permit(:key, :locale, :value, :file_path)
+    end
 
     def load_file_paths
       i18n_file_paths = I18n.load_path
