@@ -12,6 +12,8 @@ module Moirai
       end
     end
 
+    private
+
     def get_updated_file_contents(file_path)
       translations = Moirai::Translation.where(file_path: file_path)
 
