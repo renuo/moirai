@@ -42,7 +42,6 @@ module Moirai
       @decoded_path = CGI.unescape(@file_path)
     end
 
-
     def translation_params
       params.require(:translation).permit(:key, :locale, :value, :file_path)
     end
