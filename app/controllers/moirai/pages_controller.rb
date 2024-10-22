@@ -4,7 +4,7 @@ module Moirai
   class PagesController < ApplicationController
     def index
       i18n_file_paths = I18n.load_path
-      yml_file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && (path.end_with?(".yml") || path.end_with?(".yaml") )}
+      yml_file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && path.end_with?(".yml", ".yaml") }
       file_contents = yml_file_paths.map { |path| [path, parse_file(path)] }.to_h
       render json: file_contents
     end
@@ -17,7 +17,7 @@ module Moirai
       flatten_hash(yaml_content[root_key])
     end
 
-    def flatten_hash(hash, parent_key = '', result = {})
+    def flatten_hash(hash, parent_key = "", result = {})
       hash.each do |key, value|
         new_key = parent_key.empty? ? key.to_s : "#{parent_key}.#{key}"
         case value
