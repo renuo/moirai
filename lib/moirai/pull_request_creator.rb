@@ -4,8 +4,8 @@ class Moirai::PullRequestCreator
   BRANCH_NAME = "moirai-translations"
 
   def initialize
-    @github_repo_name = ENV["GITHUB_REPO_NAME"]
-    @github_access_token = ENV["GITHUB_ACCESS_TOKEN"]
+    @github_repo_name = ENV["MOIRAI_GITHUB_REPO_NAME"]
+    @github_access_token = ENV["MOIRAI_GITHUB_ACCESS_TOKEN"]
     @client = Octokit::Client.new(
       access_token: @github_access_token
     )

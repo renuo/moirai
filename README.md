@@ -49,7 +49,57 @@ rails db:migrate
 
 ## Usage
 
-... Actual details of how to use the engine should go here.
+### How to change translations
+
+Head to your application and navigate to `/moirai`. You will be greeted with a list of all the translations in your application...
+
+`# TODO: Daniel? to give more details`
+
+### Automatic PR creation with Octokit (**optional**)
+
+If you would like Moirai to automatically create a pull request on GitHub to keep translations synchronized with the codebase, you will need to set up **Octokit**, create a **Personal Access Token** on GitHub and configure the appropriate **environment variables**.
+
+#### 1. Add Octokit to Your Gemfile
+
+First, add Octokit to your project’s Gemfile:
+
+```
+gem 'octokit'
+```
+
+Then run `bundle install`.
+
+#### 2. Create a Personal Access Token (PAT) on GitHub
+
+You will need a Personal Access Token (PAT) with the `Content - Write` permission to create branches and pull requests.
+
+-	Go to GitHub Token Settings.
+-	Click Generate New Token.
+-	Give your token a name (e.g., “Moirai”).
+-	Under Scopes, select:
+     -	repo (for full control of private repositories, including writing content).
+     -	content (for read/write access to code, commit statuses, and pull requests).
+-	Generate the token and copy it immediately as it will be shown only once.
+
+#### 3. Set Up Environment Variables
+
+You need to configure the following environment variables in your application:
+
+-	`MOIRAI_GITHUB_REPO_NAME`: The name of the repository where the pull request will be created.
+-	`MOIRAI_GITHUB_ACCESS_TOKEN`: The Personal Access Token (PAT) you created earlier.
+
+For example, in your `.env` file (or Rails credentials):
+
+```
+MOIRAI_GITHUB_REPO_NAME=your-organization/your-repo
+MOIRAI_GITHUB_ACCESS_TOKEN=your-generated-token
+```
+
+#### 4. Triggering the pull request creation
+
+Moirai will now be able to use this Personal Access Token to create a pull request on GitHub when a translation is updated.
+
+To trigger this, you can press the `'Create Pull Request'` button once you have made your changes.
 
 ## Development
 
