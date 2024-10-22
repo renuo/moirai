@@ -26,7 +26,7 @@ module Moirai
               moirai_translations = I18n.backend.backends.find { |b| b.respond_to?(:moirai_translations) }.moirai_translations
               filepath = moirai_translations[I18n.locale][key]
 
-              render(partial: 'moirai/translation_files/form',
+              render(partial: "moirai/translation_files/form",
                      locals: { filepath: filepath,
                                key: key,
                                file_path: filepath,
