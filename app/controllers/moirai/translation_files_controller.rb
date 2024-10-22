@@ -22,6 +22,15 @@ module Moirai
       @translation_keys = parse_file(decoded_path)
     end
 
+    def update
+      # params: key, path, locale, value
+      # check if the file exists
+      # check if the key exists in the parsed file
+      # check if the key exists in the TransaltionModel
+      # if it does, update the value in the record
+      # if it doesn't, create the record
+    end
+
     private
 
     def load_file_paths
