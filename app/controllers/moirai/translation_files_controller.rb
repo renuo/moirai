@@ -1,5 +1,5 @@
-require 'cgi'
-require 'digest'
+require "cgi"
+require "digest"
 
 module Moirai
   class TranslationFilesController < ApplicationController
