@@ -1,7 +1,7 @@
 module Moirai
   class TranslationFilesController < ApplicationController
     before_action :load_file_handler, only: [:index, :show, :create_or_update]
-    before_action :set_translation_file, only: [:show, :create_or_update]
+    before_action :set_translation_file, only: [:show]
 
     def index
       @files = @file_handler.file_paths.map do |path|
@@ -37,7 +37,7 @@ module Moirai
     private
 
     def handle_update(translation)
-      translation_from_file = @file_handler.parse_file(@decoded_path)
+      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
       if translation_from_file[translation.key] == translation_params[:value]
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
@@ -55,7 +55,7 @@ module Moirai
     end
 
     def handle_create
-      translation_from_file = @file_handler.parse_file(@decoded_path)
+      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
       if translation_from_file[translation_params[:key]] == translation_params[:value]
         flash.alert = "Translation #{translation_params[:key]} already exists."
         redirect_to_translation_file(translation_params[:file_path])
@@ -74,7 +74,7 @@ module Moirai
     end
 
     def redirect_to_translation_file(file_path)
-      redirect_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
+      redirect_back_or_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
     end
 
     def set_translation_file
