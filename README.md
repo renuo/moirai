@@ -51,6 +51,15 @@ rails db:migrate
 
 ... Actual details of how to use the engine should go here.
 
+### Authentication
+
+Moirai allows you to use basic HTTP authentication to protect the engine. To enable this, you need to set the following environment variables:
+
+```env
+MOIRAI_BASICAUTH_NAME=moirai
+MOIRAI_BASICAUTH_PASSWORD=moirai
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies.
