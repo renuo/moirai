@@ -19,17 +19,26 @@ module Moirai
     def get_updated_file_contents(file_path)
       translations = Moirai::Translation.where(file_path: file_path)
 
-      yaml = YAML.load_file(file_path)
+      original_yaml = YAML.load_file(file_path)
 
       translations.each do |translation|
         keys = [translation.locale] + translation.key.split(".")
 
-        keys.inject(yaml) do |node, key|
-          node[key] ||= {}
-        end[keys.last] = translation.value
+        yaml = {}
+        node = original_yaml
+
+        for i in 0...keys.size
+          key = keys[i]
+          if i == keys.size - 1
+            node[key] = translation.value
+          else
+            node[key] ||= {}
+            node = node[key]
+          end
+        end
       end
 
-      yaml.to_yaml
+      original_yaml.to_yaml
     end
   end
 end
