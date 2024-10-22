@@ -1,0 +1,2 @@
+ignore:
+  - "lib/generators/moirai/templates/migration.rb"
