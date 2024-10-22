@@ -27,7 +27,6 @@ module Moirai
 
     def load_file_paths
       i18n_file_paths = I18n.load_path
-      # @file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && path.end_with?(".yml", ".yaml") }
       @file_paths = i18n_file_paths.select { |path| path.end_with?(".yml", ".yaml") }
     end
 
