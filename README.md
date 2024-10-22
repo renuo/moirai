@@ -107,6 +107,25 @@ MOIRAI_BASICAUTH_NAME=moirai
 MOIRAI_BASICAUTH_PASSWORD=moirai
 ```
 
+### Custom authentication
+
+If you want to use custom authentication for the engine, you can create a custom class that inherits the `AuthenticationStrategy`:
+
+```rb
+class CustomAuthenticationStrategy < Moirai::AuthenticationStrategy
+  def authenticate
+    # Your custom authentication logic here
+  end
+end
+```
+
+And then set the following configuration in an initializer:
+
+```rb
+# config/initializers/moirai.rb
+config.authentication_strategy = CustomAuthenticationStrategy
+```
+
 ## Development
 
 ## Development
