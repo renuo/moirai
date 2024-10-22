@@ -5,5 +5,5 @@ Moirai::Engine.routes.draw do
 
   resources :translation_files, only: %i[index show], as: "moirai_translation_files"
   post "/translation_files/open_pr", to: "translation_files#open_pr", as: "moirai_open_pr"
-  post "/translation_files/:id", to: "translation_files#create_or_update", as: "moirai_create_or_update_translation"
+  post "/translation_files", to: "translation_files#create_or_update", as: "moirai_create_or_update_translation"
 end
