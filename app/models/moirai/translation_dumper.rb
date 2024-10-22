@@ -8,7 +8,7 @@ module Moirai
 
         updated_file_contents = get_updated_file_contents(file_path)
         {
-          file_path: file_path.sub("#{project_root}", "."),
+          file_path: file_path.sub(project_root, "."),
           content: updated_file_contents
         }
       end.compact
