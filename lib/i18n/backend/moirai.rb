@@ -54,11 +54,11 @@ module I18n
       end
 
       def load_file(filename)
-        type = File.extname(filename).tr('.', '').downcase
+        type = File.extname(filename).tr(".", "").downcase
         raise UnknownFileType.new(type, filename) unless respond_to?(:"load_#{type}", true)
         data, keys_symbolized = send(:"load_#{type}", filename)
         unless data.is_a?(Hash)
-          raise InvalidLocaleData.new(filename, 'expects it to return a hash, but does not')
+          raise InvalidLocaleData.new(filename, "expects it to return a hash, but does not")
         end
         data.each { |locale, d| store_translations(filename, locale, d || {}, skip_symbolize_keys: keys_symbolized) }
 

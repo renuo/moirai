@@ -14,10 +14,10 @@ module Moirai
 
     # TODO: how to do this without rewriting the entire method?
     # https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/translation_helper.rb#L122
-    initializer 'moirai.override_translation_helper' do
+    initializer "moirai.override_translation_helper" do
       ActiveSupport.on_load(:action_view) do
         module ActionView::Helpers::TranslationHelper
-          alias :original_translate :translate
+          alias_method :original_translate, :translate
 
           def translate(key, **options)
             value = original_translate(key, **options)
@@ -27,16 +27,16 @@ module Moirai
               filepath = moirai_translations[I18n.locale][key]
 
               render(partial: "moirai/translation_files/form",
-                     locals: { filepath: filepath,
-                               key: key,
-                               file_path: filepath,
-                               value: value })
+                locals: {filepath: filepath,
+                         key: key,
+                         file_path: filepath,
+                         value: value})
             else
               value
             end
           end
 
-          alias :t :translate
+          alias_method :t, :translate
 
           def moirai_edit_enabled?
             false

@@ -2,6 +2,6 @@
 
 module ApplicationHelper
   def moirai_edit_enabled?
-    params[:moirai] == 'true'
+    params[:moirai] == "true"
   end
 end
