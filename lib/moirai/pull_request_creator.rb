@@ -1,7 +1,9 @@
-require "octokit"
-
 class Moirai::PullRequestCreator
   BRANCH_NAME = "moirai-translations"
+
+  def self.available?
+    defined?(Octokit)
+  end
 
   def initialize
     @github_repo_name = ENV["MOIRAI_GITHUB_REPO_NAME"]
