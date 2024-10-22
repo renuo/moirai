@@ -53,7 +53,7 @@ Simply change the value and press ENTER to update the translation and see it imm
 ### Automatic PR creation with Octokit (**optional**)
 
 If you would like Moirai to automatically create a pull request on GitHub to keep translations synchronized with the codebase, 
-you need to set up **Octokit**. 
+you need to set up [Octokit](https://github.com/octokit/octokit.rb).
 Create a **Personal Access Token** on GitHub and configure the appropriate **environment variables**.
 
 #### 1. Add Octokit to Your Gemfile
