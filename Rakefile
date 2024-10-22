@@ -14,4 +14,8 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList["test/**/test_*.rb"]
 end
 
+task build: :environment do
+  Rake::Task["app:assets:precompile"].invoke
+end
+
 task default: :test
