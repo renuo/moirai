@@ -26,7 +26,12 @@ module Moirai
               moirai_translations = I18n.backend.backends.find { |b| b.respond_to?(:moirai_translations) }.moirai_translations
               filepath = moirai_translations[I18n.locale][key]
 
-              render_editable_translation(value, key, filepath)
+
+              render(partial: "moirai/translation_files/form",
+                     locals: {filepath: filepath,
+                              key: key,
+                              file_path: filepath,
+                              value: value})
             else
               value
             end
@@ -39,14 +44,6 @@ module Moirai
           end
         end
       end
-    end
-
-    def render_editable_translation(value, key, filepath)
-      render(partial: "moirai/translation_files/form",
-             locals: {filepath: filepath,
-                      key: key,
-                      file_path: filepath,
-                      value: value})
     end
   end
 end
