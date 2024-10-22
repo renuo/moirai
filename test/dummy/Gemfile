@@ -8,4 +8,5 @@ group :development, :test do
   gem "puma"
   gem "sqlite3"
   gem "rake"
+  gem "dotenv"
 end
