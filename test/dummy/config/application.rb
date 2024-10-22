@@ -8,6 +8,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 require "moirai"
+require "dotenv/load"
 
 module Dummy
   class Application < Rails::Application

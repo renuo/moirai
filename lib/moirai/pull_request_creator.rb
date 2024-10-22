@@ -1,6 +1,6 @@
 require "octokit"
 
-class PullRequestCreator
+class Moirai::PullRequestCreator
   BRANCH_NAME = "moirai-translations"
 
   def initialize
