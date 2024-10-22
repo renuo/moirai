@@ -3,16 +3,13 @@ require 'digest'
 
 module Moirai
   class TranslationFilesController < ApplicationController
+    before_action :load_file_paths, only: [:index, :show]
+    before_action :generate_file_hashes, only: [:index, :show]
+
     def index
-      i18n_file_paths = I18n.load_path
-      @file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && path.end_with?(".yml", ".yaml") }
-      @file_hashes = @file_paths.map { |path| [Digest::SHA256.hexdigest(path), path] }.to_h
     end
 
     def show
-      i18n_file_paths = I18n.load_path
-      @file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && path.end_with?(".yml", ".yaml") }
-      @file_hashes = @file_paths.map { |path| [Digest::SHA256.hexdigest(path), path] }.to_h
       file_path = @file_hashes[params[:id]]
       decoded_path = CGI.unescape(file_path)
       @translations = parse_file(decoded_path)
@@ -20,6 +17,15 @@ module Moirai
     end
 
     private
+
+    def load_file_paths
+      i18n_file_paths = I18n.load_path
+      @file_paths = i18n_file_paths.select { |path| (path.start_with? Rails.root.to_s) && path.end_with?(".yml", ".yaml") }
+    end
+
+    def generate_file_hashes
+      @file_hashes = @file_paths.map { |path| [Digest::SHA256.hexdigest(path), path] }.to_h
+    end
 
     def parse_file(path)
       yaml_content = YAML.load_file(path)
