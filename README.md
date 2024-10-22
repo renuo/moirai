@@ -87,7 +87,7 @@ You need to configure the following environment variables in your application:
 
 For example, in your `.env` file (or Rails credentials):
 
-```
+```env
 MOIRAI_GITHUB_REPO_NAME=your-organization/your-repo
 MOIRAI_GITHUB_ACCESS_TOKEN=your-generated-token
 ```
@@ -96,7 +96,7 @@ MOIRAI_GITHUB_ACCESS_TOKEN=your-generated-token
 
 Moirai will now be able to use this Personal Access Token to create a pull request on GitHub when a translation is updated.
 
-To trigger this, you can press the `'Create Pull Request'` button once you have made your changes.
+To trigger this, you can press the `Create Pull Request` button once you have made your changes.
 
 ### Authentication
 
@@ -109,12 +109,35 @@ MOIRAI_BASICAUTH_PASSWORD=moirai
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies.
-Then, set your environment variables using a `.env` file.
-Then, run `bin/check` to run the tests.
-You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Development
 
-You can view the engine in a dummy app by heading to the `test/dummy` folder and running `bin/rails s` 
+1. Check out the repo:
+    ```bash
+    git clone git@github.com:renuo/moirai.git
+    cd moirai
+    ```
+
+2. Run the setup script to install dependencies:
+    ```bash
+    bin/setup
+    ```
+
+3. Copy the example environment variables file to create your own `.env` file:
+    ```bash
+    cp .env.example .env
+    ```
+
+4. Set your environment variables using the newly created `.env` file.
+
+5. Run the tests:
+    ```bash
+    bin/check
+    ```
+
+6. To view the engine in a dummy app:
+    ```bash
+    bin/rails s
+    ```
 
 ## TODO
 
