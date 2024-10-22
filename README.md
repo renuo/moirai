@@ -33,7 +33,17 @@ Mount the engine in your `config/routes.rb`:
 mount Moirai::Engine => '/moirai', as: 'moirai'
 ```
 
-and run `bin/rails db:migrate`.
+Generate the necessary files including the database migration:
+
+```bash
+$ rails generator moirai:install
+```
+
+Migrate the create the table in your database:
+
+```bash
+$ rails db:migrate
+```
 
 ## Usage
 
