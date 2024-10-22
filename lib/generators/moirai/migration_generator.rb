@@ -11,7 +11,7 @@ module Moirai
       source_root File.expand_path("templates", __dir__)
 
       def create_migration_file
-        migration_template "migration.rb", "db/migrate/create_moirai_translations.rb", migration_version: migration_version
+        migration_template "migration.rb.erb", "db/migrate/create_moirai_translations.rb", migration_version: migration_version
       end
 
       private
