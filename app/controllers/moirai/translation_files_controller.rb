@@ -29,14 +29,38 @@ module Moirai
       generate_file_hashes
       set_translation_file
 
-      if (translation = Translation.find_by(file_path: @decoded_path, key: translation_params[:key]))
-        if translation.update(value: translation_params[:value])
-          flash.notice = "Translation #{translation.key} was successfully updated."
-        else
-          flash.alert = translation.errors.full_messages.join(", ")
-        end
+      if (translation = Translation.find_by(file_path: translation_params[:file_path], key: translation_params[:key], locale: translation_params[:locale]))
+        handle_update(translation)
+      else
+        handle_create
+      end
+    end
 
+    private
+
+    def handle_update(translation)
+      translation_from_file = parse_file(@decoded_path)
+      if translation_from_file[translation.key] == translation_params[:value]
+        translation.destroy
+        flash.notice = "Translation #{translation.key} was successfully deleted."
         redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
+        return
+      end
+
+      if translation.update(value: translation_params[:value])
+        flash.notice = "Translation #{translation.key} was successfully updated."
+      else
+        flash.alert = translation.errors.full_messages.join(", ")
+      end
+
+      redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
+    end
+
+    def handle_create
+      translation_from_file = parse_file(@decoded_path)
+      if translation_from_file[translation_params[:key]] == translation_params[:value]
+        flash.alert = "Translation already exists."
+        redirect_to translation_file_path(Digest::SHA256.hexdigest(translation_params[:file_path]))
         return
       end
 
@@ -49,8 +73,6 @@ module Moirai
 
       redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
     end
-
-    private
 
     def set_translation_file
       @file_path = @file_hashes[params[:id]]

@@ -20,7 +20,7 @@
             <%= f.hidden_field :key, value: key %>
             <%= f.hidden_field :file_path, value: @decoded_path %>
             <%= f.hidden_field :locale, value: I18n.locale %>
-            <%= f.text_field :value, value: value %>
+            <%= f.text_field :value, value: Moirai::Translation.find_by(key: key, file_path: @decoded_path, locale: I18n.locale)&.value || value %>
             <%= f.submit 'Update' %>
           <% end %>
         </td>
