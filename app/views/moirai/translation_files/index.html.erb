@@ -1,13 +1,15 @@
-<h1>Translation files</h1>
+<main>
+  <h1>Translation files</h1>
 
-<%= button_to "Create or update PR", moirai_open_pr_path %>
+  <%= button_to "Create or update PR", moirai_open_pr_path %>
 
-<% @files.each do |file| %>
-  <article>
-  <bold><%= link_to (file[:name]), moirai_translation_file_path(file[:id]) %></bold>
+  <% @files.each do |file| %>
+    <article>
+      <bold><%= link_to (file[:name]), moirai_translation_file_path(file[:id]) %></bold>
 
-  <hr>
+      <hr>
 
-  <%= file[:path] %>
-  </article>
-<% end %>
+      <%= file[:path] %>
+    </article>
+  <% end %>
+</main>
