@@ -13,6 +13,6 @@
 /test/dummy/tmp/
 
 .env
-Gemfile.lock
+/Gemfile.lock
 *.gem
 .idea/
