@@ -8,7 +8,7 @@ module Moirai
 
         updated_file_contents = get_updated_file_contents(file_path)
         {
-          file_path: file_path.sub("#{project_root}/", ""),
+          file_path: file_path.sub("#{project_root}", "."),
           content: updated_file_contents
         }
       end.compact
@@ -22,7 +22,7 @@ module Moirai
       yaml = YAML.load_file(file_path)
 
       translations.each do |translation|
-        keys = translation.key.split(".")
+        keys = [translation.locale] + translation.key.split(".")
 
         keys.inject(yaml) do |node, key|
           node[key] ||= {}

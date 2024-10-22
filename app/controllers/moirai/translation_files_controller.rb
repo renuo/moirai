@@ -20,7 +20,7 @@ module Moirai
     def create_or_update
       if (translation = Translation.find_by(file_path: translation_params[:file_path],
         key: translation_params[:key],
-        locale: translation_params[:locale]))
+        locale: @file_handler.get_first_key(translation_params[:file_path])))
         handle_update(translation)
       else
         handle_create
@@ -63,6 +63,7 @@ module Moirai
       end
 
       translation = Translation.new(translation_params)
+      translation.locale = @file_handler.get_first_key(translation_params[:file_path])
       if translation.save
         flash.notice = "Translation #{translation.key} was successfully created."
       else

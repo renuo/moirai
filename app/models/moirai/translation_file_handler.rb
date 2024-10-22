@@ -15,6 +15,11 @@ module Moirai
       flatten_hash(yaml_content[root_key])
     end
 
+    def get_first_key(file_path)
+      yaml_content = YAML.load_file(file_path)
+      yaml_content.keys.first
+    end
+
     private
 
     def load_file_paths
@@ -25,6 +30,7 @@ module Moirai
     def generate_file_hashes
       @file_hashes = @file_paths.map { |path| [Digest::SHA256.hexdigest(path), path] }.to_h
     end
+
 
     def flatten_hash(hash, parent_key = "", result = {})
       hash.each do |key, value|
