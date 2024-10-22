@@ -1,7 +1,11 @@
 <main>
   <h1>Translation files</h1>
 
+<% if Moirai::PullRequestCreator.available? %>
   <%= button_to "Create or update PR", moirai_open_pr_path %>
+<% else %>
+  <p>PR creation is not available. Add the gem octokit to your gemfile to enable this feature</p>
+<% end %>
 
   <% @files.each do |file| %>
     <article>
