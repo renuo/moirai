@@ -1,11 +1,11 @@
-require 'octokit'
+require "octokit"
 
 class PullRequestCreator
-  BRANCH_NAME = 'moirai-translations'
+  BRANCH_NAME = "moirai-translations"
 
   def initialize
-    @github_repo_name = ENV['GITHUB_REPO_NAME']
-    @github_access_token = ENV['GITHUB_ACCESS_TOKEN']
+    @github_repo_name = ENV["GITHUB_REPO_NAME"]
+    @github_access_token = ENV["GITHUB_ACCESS_TOKEN"]
     @client = Octokit::Client.new(
       access_token: @github_access_token
     )
@@ -43,39 +43,34 @@ class PullRequestCreator
   end
 
   def branch_exists?
-    begin
-      @client.ref(@github_repo_name, "heads/#{BRANCH_NAME}")
-      true
-    rescue Octokit::NotFound
-      false
-    end
+    @client.ref(@github_repo_name, "heads/#{BRANCH_NAME}")
+    true
+  rescue Octokit::NotFound
+    false
   end
 
   def update_file(path, content)
     # TODO: check what happens if branch exists
 
-    begin
-      file = @client.contents(@github_repo_name, path: path, ref: BRANCH_NAME)
-      file_sha = file.sha
+    file = @client.contents(@github_repo_name, path: path, ref: BRANCH_NAME)
+    file_sha = file.sha
 
-      @client.update_contents(
-        @github_repo_name,
-        path,
-        "Updating translations for #{path} by Moirai",
-        file_sha,
-        content,
-        branch: BRANCH_NAME
-      )
-    rescue Octokit::NotFound
-      @client.create_contents(
-        @github_repo_name,
-        path,
-        "Creating translations for #{path} by Moirai",
-        content,
-        branch: BRANCH_NAME
-      )
-    end
-
+    @client.update_contents(
+      @github_repo_name,
+      path,
+      "Updating translations for #{path} by Moirai",
+      file_sha,
+      content,
+      branch: BRANCH_NAME
+    )
+  rescue Octokit::NotFound
+    @client.create_contents(
+      @github_repo_name,
+      path,
+      "Creating translations for #{path} by Moirai",
+      content,
+      branch: BRANCH_NAME
+    )
   end
 
   def pull_request_exists?
