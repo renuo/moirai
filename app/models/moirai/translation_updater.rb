@@ -1,42 +1,30 @@
 module Moirai
   class TranslationUpdater
-    attr_reader :translation
+    def call
+      translations = Moirai::Translation.all
+      translations.map(&:file_path).uniq.each do |file_path|
+        @file_path = file_path
+        @translations = translations.select { |t| t.file_path == file_path }
 
-    def initialize(translation)
-      @translation = translation
-    end
+        yaml = YAML.load_file(@file_path)
 
-    def update_translation
-      return unless File.exist?(translation.file_path)
+        @translations.each do |translation|
+          keys = translation.key.split(".")
 
-      lines = File.readlines(translation.file_path)
-      updated_lines = lines.map { |line| update_line(line) }
+          keys.inject(yaml) do |node, key|
+            node[key] ||= {}
+          end[keys.last] = translation.value
+        end
 
-      File.write(translation.file_path, updated_lines.join)
-
-      true
-    end
-
-    private
-
-    def update_line(line)
-      # Add root node (locale) to the key
-      root_key = "#{locale_root}.#{translation.key}"
-
-      # Check if the line starts with the root key and replace the value if it matches
-      if line.strip.start_with?(root_key)
-        # Extract the indentation level for pretty formatting
-        indent = line[/\A\s*/]
-        return "#{indent}#{root_key}: #{translation.value.strip}\n"
+        pp yaml.to_yaml
       end
-
-      line
     end
 
-    # Get the locale root node (based on file path)
-    def locale_root
-      # Assume the root node is the first part of the locale file
-      translation.file_path.match(/\/([a-z]{2})\.yml$/)[1]
+    def update_translation_file(file_path)
+      translations = Moirai::Translation.where(file_path: file_path)
+
+
+      yaml.to_yaml
     end
   end
 end
