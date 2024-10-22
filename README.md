@@ -96,6 +96,15 @@ Moirai will now be able to use this Personal Access Token to create a pull reque
 
 To trigger this, you can press the `'Create Pull Request'` button once you have made your changes.
 
+### Authentication
+
+Moirai allows you to use basic HTTP authentication to protect the engine. To enable this, you need to set the following environment variables:
+
+```env
+MOIRAI_BASICAUTH_NAME=moirai
+MOIRAI_BASICAUTH_PASSWORD=moirai
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies.
