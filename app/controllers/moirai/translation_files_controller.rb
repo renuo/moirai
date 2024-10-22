@@ -23,7 +23,7 @@ module Moirai
     end
 
     def basic_auth_present?
-      ENV["MOIRAI_BASICAUTH_NAME"].present? && ENV["MOIRAI_BASICAUTH_PASSWORD"].present? 
+      ENV["MOIRAI_BASICAUTH_NAME"].present? && ENV["MOIRAI_BASICAUTH_PASSWORD"].present?
     end
 
     def show
