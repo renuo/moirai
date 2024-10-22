@@ -31,7 +31,6 @@ module Moirai
       @file_hashes = @file_paths.map { |path| [Digest::SHA256.hexdigest(path), path] }.to_h
     end
 
-
     def flatten_hash(hash, parent_key = "", result = {})
       hash.each do |key, value|
         new_key = parent_key.empty? ? key.to_s : "#{parent_key}.#{key}"
