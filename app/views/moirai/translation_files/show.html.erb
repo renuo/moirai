@@ -12,7 +12,13 @@
     <% @translation_keys.each do |key, value| %>
       <tr>
         <td><%= key %></td>
-        <td><%= value %></td>
+        <td>
+          <%= form_for Moirai::Translation.new, url: translation_files_path do |f| %>
+            <%= f.hidden_field :key, value: key %>
+            <%= f.text_field :value, value: value %>
+            <%= f.submit 'Update' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
