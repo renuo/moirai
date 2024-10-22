@@ -1,12 +1,14 @@
 # 🧵 Moirai
 
+<img src="./docs/moirai.png" width="100%" />
+
 ### Manage translation strings in real time
 
 - Let your non-developer team members finally manage translations (yes, even Karen from marketing).
 - See those translations live in your app, so you can make sure “Submit” isn’t overlapping the button where “Do not press this button EVER” should be.
-- Automatically create PRs based on these changes, saving your developers from yet another “small tweak” email request.
+- Automatically create Pull Requests based on these changes, saving your developers from yet another “small tweak” email request.
 
->Let the world be translated, one typo at a time.
+> Let the world be translated, one typo at a time.
 
 
 ## Installation
@@ -53,4 +55,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Copyright
 
-Coypright 2024 [Renuo AG](https://www.renuo.ch/).
+Coypright [Renuo AG](https://www.renuo.ch/).
