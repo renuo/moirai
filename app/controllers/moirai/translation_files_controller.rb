@@ -32,7 +32,7 @@ module Moirai
       if translation_from_file[translation.key] == translation_params[:value]
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
-        redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
+        redirect_to_translation_file(translation.file_path)
         return
       end
 
@@ -42,14 +42,14 @@ module Moirai
         flash.alert = translation.errors.full_messages.join(", ")
       end
 
-      redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
+      redirect_to_translation_file(translation.file_path)
     end
 
     def handle_create
       translation_from_file = parse_file(@decoded_path)
       if translation_from_file[translation_params[:key]] == translation_params[:value]
         flash.alert = "Translation #{translation_params[:key]} already exists."
-        redirect_to translation_file_path(Digest::SHA256.hexdigest(translation_params[:file_path]))
+        redirect_to_translation_file(translation_params[:file_path])
         return
       end
 
@@ -60,7 +60,11 @@ module Moirai
         flash.alert = translation.errors.full_messages.join(", ")
       end
 
-      redirect_to translation_file_path(Digest::SHA256.hexdigest(translation.file_path))
+      redirect_to_translation_file(translation.file_path)
+    end
+
+    def redirect_to_translation_file(file_path)
+      redirect_to translation_file_path(Digest::SHA256.hexdigest(file_path))
     end
 
     def set_translation_file
