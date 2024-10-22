@@ -2,7 +2,7 @@
   <h1>Update translations</h1>
 
   <code><%= @file_path %></code><br>
-  <p><%= link_to 'Back', translation_files_path %></p>
+  <p><%= link_to 'Back', moirai_translation_files_path %></p>
 
   <table>
     <thead>
@@ -24,7 +24,7 @@
             <% end %>
           </td>
           <td>
-            <%= form_for Moirai::Translation.new, url: create_or_update_translation_path do |f| %>
+            <%= form_for Moirai::Translation.new, url: moirai_create_or_update_translation_path do |f| %>
               <%= f.hidden_field :key, value: key %>
               <%= f.hidden_field :file_path, value: @decoded_path %>
               <%= f.hidden_field :locale, value: I18n.locale %>

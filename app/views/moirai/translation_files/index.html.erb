@@ -2,7 +2,7 @@
 
 <% @files.each do |file| %>
   <article>
-  <bold><%= link_to (file[:name]), translation_file_path(file[:id]) %></bold>
+  <bold><%= link_to (file[:name]), moirai_translation_file_path(file[:id]) %></bold>
 
   <hr>
 

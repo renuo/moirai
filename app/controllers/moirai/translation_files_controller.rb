@@ -64,7 +64,7 @@ module Moirai
     end
 
     def redirect_to_translation_file(file_path)
-      redirect_to translation_file_path(Digest::SHA256.hexdigest(file_path))
+      redirect_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
     end
 
     def set_translation_file
