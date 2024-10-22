@@ -29,10 +29,15 @@ module Moirai
 
     def open_pr
       flash.notice = "I created an amazing PR"
-      Moirai::PullRequestCreator.new.create_pull_request([{
-                                                    path: 'README.md',
-                                                    content: "Changed!"
-                                                  }])
+      changes = [{
+                   path: 'README.md',
+                   content: "Changed!"
+                 },
+                 {
+                   path: 'README2.md',
+                   content: "New file!"
+                 }]
+      Moirai::PullRequestCreator.new.create_pull_request(changes)
       redirect_back_or_to(root_path)
     end
 
