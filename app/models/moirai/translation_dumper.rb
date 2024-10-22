@@ -1,9 +1,7 @@
 module Moirai
   class TranslationDumper
     def call
-      updated_translation_file_paths = Moirai::Translation.pluck(:file_path).uniq
-
-      updated_translation_file_paths.map do |file_path|
+      Moirai::Translation.pluck(:file_path).uniq.map do |file_path|
         updated_file_contents = get_updated_file_contents(file_path)
         {
           file_path: file_path,
