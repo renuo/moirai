@@ -1,3 +1,7 @@
+<span contenteditable data-target="moirai-translation">
+
+</span>
+
 <%= form_for Moirai::Translation.new, url: moirai.moirai_create_or_update_translation_path do |f| %>
   <%= f.hidden_field :key, value: key %>
   <%= f.hidden_field :file_path, value: file_path %>
