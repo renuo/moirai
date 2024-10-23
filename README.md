@@ -161,7 +161,6 @@ end
 * Support for interpolation
 * Support for count variants
 * Better inline editing tool
-* Support for relative keys in the inline editing tool
 * Performance of translations lookup
 * Support for translations and strings coming from other gems
 

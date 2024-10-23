@@ -9,13 +9,6 @@ module I18n
         end
       end
 
-      # This method receives a locale, a data hash and options for storing translations.
-      def store_translations(filename, locale, data, options = EMPTY_HASH)
-        original = super(locale, data, options)
-        store_moirai_translations(filename, locale, data, options)
-        original
-      end
-
       def store_moirai_translations(filename, locale, data, options)
         moirai_translations[locale] ||= Concurrent::Hash.new
         flatten_data = flatten_hash(filename, data)
@@ -60,7 +53,10 @@ module I18n
         unless data.is_a?(Hash)
           raise InvalidLocaleData.new(filename, "expects it to return a hash, but does not")
         end
-        data.each { |locale, d| store_translations(filename, locale, d || {}, skip_symbolize_keys: keys_symbolized) }
+        data.each do |locale, d|
+          store_translations(locale, d || {}, skip_symbolize_keys: keys_symbolized)
+          store_moirai_translations(filename, locale, d || {}, skip_symbolize_keys: keys_symbolized)
+        end
 
         data
       end

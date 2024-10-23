@@ -9,7 +9,9 @@ module Moirai
     end
 
     config.after_initialize do
-      I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
+      moirai_backend = I18n::Backend::Moirai.new
+      moirai_backend.eager_load!
+      I18n.backend = I18n::Backend::Chain.new(moirai_backend, I18n.backend)
     end
 
     # TODO: how to do this without rewriting the entire method?
@@ -24,12 +26,11 @@ module Moirai
 
             if moirai_edit_enabled?
               moirai_translations = I18n.backend.backends.find { |b| b.respond_to?(:moirai_translations) }.moirai_translations
-              filepath = moirai_translations[I18n.locale][key]
+              file_path = moirai_translations[I18n.locale][scope_key_by_partial(key)]
 
               render(partial: "moirai/translation_files/form",
-                locals: {filepath: filepath,
-                         key: key,
-                         file_path: filepath,
+                locals: {key: scope_key_by_partial(key),
+                         file_path: file_path,
                          value: value})
             else
               value
@@ -39,7 +40,7 @@ module Moirai
           alias_method :t, :translate
 
           def moirai_edit_enabled?
-            false
+            params[:moirai] == "true"
           end
         end
       end
