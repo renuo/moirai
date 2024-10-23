@@ -46,9 +46,8 @@ bin/rails db:migrate
 
 ### How to change translations
 
-Here you will find a list of all the files containing texts that can be translated.
-
-Simply change the value and press ENTER to update the translation and see it immediately changed on the application.
+If you mounted Moirai under "/moirai", head there and you will find a list of all the files containing texts that can be translated.
+Open a file, change the value of translations, and press ENTER to update the translation and see it immediately changed on the application.
 
 ### Automatic PR creation with Octokit (**optional**)
 
@@ -100,11 +99,23 @@ To trigger this, you can press the `Create Pull Request` button once you have ma
 
 ### Authentication
 
-Moirai allows you to use basic HTTP authentication to protect the engine. To enable this, you need to set the following environment variables:
+Moirai allows you to use basic HTTP authentication to protect the engine. 
+To enable this, you need to set the following environment variables:
 
 ```env
 MOIRAI_BASICAUTH_NAME=moirai
 MOIRAI_BASICAUTH_PASSWORD=moirai
+```
+
+> ⚠️ Remember to protect Moirai. You don't want to give everyone the possibility to change strings in the application.
+
+If you have authenticated users, you can leverage the Rails Routes protection mechanism to protect the engine. 
+See the following example:
+
+```ruby
+authenticated :user, lambda {|u| u.role == "admin"} do
+  mount Moirai::Engine => '/moirai', as: 'moirai'
+end
 ```
 
 ## Development
