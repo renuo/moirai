@@ -24,13 +24,7 @@ And then execute:
 bundle
 ```
 
-Mount the engine in your `config/routes.rb`:
-
-```ruby
-mount Moirai::Engine => '/moirai', as: 'moirai'
-```
-
-Next, you need to run the generator which will create the necessary files including the database migration:
+Next, you need to run the generator which will create the necessary files including the database migration, as well as inserting the engine in the `routes.rb` file:
 
 ```bash
 bin/rails g moirai:install

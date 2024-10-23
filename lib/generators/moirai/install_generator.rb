@@ -9,6 +9,11 @@ module Moirai
       def copy_migration
         invoke "moirai:migration"
       end
+
+      def mount_engine
+        route 'mount Moirai::Engine => "/moirai", as: "moirai"
+        '
+      end
     end
   end
 end
