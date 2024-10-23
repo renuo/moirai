@@ -102,9 +102,7 @@ module Moirai
     end
 
     def translation_params
-      strong_params = params.require(:translation).permit(:key, :value, :file_path)
-      strong_params[:file_path] ||= invent_file_path(strong_params[:locale], strong_params[:key])
-      strong_params
+      params.require(:translation).permit(:key, :value, :file_path)
     end
 
     def load_file_handler
