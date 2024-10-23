@@ -39,6 +39,14 @@ module Moirai
     end
 
     def handle_update(translation)
+
+      if translation.value.blank?
+        translation.destroy
+        flash.notice = "Translation #{translation.key} was successfully deleted."
+        redirect_to_translation_file(translation.file_path)
+        return
+      end
+
       if File.exist? translation_params[:file_path]
         translation_from_file = @file_handler.parse_file(translation_params[:file_path])
         if translation_from_file[translation.key] == translation_params[:value] || translation_params[:value].blank?
