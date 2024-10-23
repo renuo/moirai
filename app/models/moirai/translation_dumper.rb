@@ -21,7 +21,7 @@ module Moirai
 
       root_key = File.exist?(file_path) ? YAML.load_file(file_path).keys.first : I18n.locale
 
-      yaml = File.exist?(file_path) ? YAML.load_file(file_path) : { root_key => {} }
+      yaml = File.exist?(file_path) ? YAML.load_file(file_path) : {root_key => {}}
 
       translations.each do |translation|
         keys = [root_key] + translation.key.split(".")
