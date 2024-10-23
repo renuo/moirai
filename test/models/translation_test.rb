@@ -19,12 +19,6 @@ module Moirai
       assert_includes @valid_translation.errors[:key], "can't be blank"
     end
 
-    test "should be invalid without locale" do
-      @valid_translation.locale = nil
-      assert_not @valid_translation.valid?
-      assert_includes @valid_translation.errors[:locale], "can't be blank"
-    end
-
     test "should be invalid without file_path" do
       @valid_translation.file_path = nil
       assert_not @valid_translation.valid?

@@ -21,8 +21,10 @@ module Moirai
 
       yaml = YAML.load_file(file_path)
 
+      root_key = yaml.keys.first
+
       translations.each do |translation|
-        keys = [translation.locale] + translation.key.split(".")
+        keys = [root_key] + translation.key.split(".")
 
         node = yaml
 

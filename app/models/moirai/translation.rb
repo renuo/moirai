@@ -2,7 +2,7 @@
 
 module Moirai
   class Translation < Moirai::ApplicationRecord
-    validates_presence_of :key, :locale, :file_path
+    validates_presence_of :key, :file_path
     validate :file_path_must_exist
 
     private
