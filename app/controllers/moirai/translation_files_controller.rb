@@ -63,7 +63,6 @@ module Moirai
       end
 
       translation = Translation.new(translation_params)
-      translation.locale = @file_handler.get_first_key(translation_params[:file_path])
       if translation.save
         flash.notice = "Translation #{translation.key} was successfully created."
       else
