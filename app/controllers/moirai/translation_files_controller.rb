@@ -39,7 +39,6 @@ module Moirai
     end
 
     def handle_update(translation)
-
       if translation.value.blank?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
