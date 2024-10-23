@@ -4,8 +4,8 @@
 
 ### Manage translation strings in real time
 
-- Let your non-developer team members finally manage translations (yes, even Karen from marketing).
-- See those translations live in your app, so you can make sure “Submit” isn’t overlapping the button where “Do not press this button EVER” should be.
+- Let your non-developer team members finally manage translations (yes, even Karen from marketing...).
+- See those translations live in your app, so you can make sure “Submit” isn’t overlapping the button where “**Do not press this button EVER” should be.
 - Automatically create Pull Requests based on these changes, saving your developers from yet another “small tweak” email request.
 
 > Let the world be translated, one typo at a time.
@@ -60,7 +60,7 @@ end
 
 If you would like Moirai to automatically create a pull request on GitHub to keep translations synchronized with the codebase, 
 you need to set up [Octokit](https://github.com/octokit/octokit.rb).
-Create a **Personal Access Token** on GitHub and configure the appropriate **environment variables**.
+You will also need to create a **Personal Access Token** on GitHub, and configure the access in the appropriate **environment variables** (this is explained below).
 
 #### 1. Add Octokit to Your Gemfile
 
@@ -74,7 +74,7 @@ Then run `bundle install`.
 
 #### 2. Create a Personal Access Token (PAT) on GitHub
 
-You will need a Personal Access Token (PAT) with the `Content - Write` permission to create branches and pull requests.
+You will need a Personal Access Token (PAT) with the `Content - Write` permission to allow Octokit to create branches and pull requests.
 
 -	Go to GitHub Token Settings.
 -	Click Generate New Token.
@@ -91,18 +91,26 @@ You need to configure the following environment variables in your application:
 -	`MOIRAI_GITHUB_REPO_NAME`: The name of the repository where the pull request will be created.
 -	`MOIRAI_GITHUB_ACCESS_TOKEN`: The Personal Access Token (PAT) you created earlier.
 
-For example, in your `.env` file (or Rails credentials):
+For example, in your `.env` file:
 
 ```env
 MOIRAI_GITHUB_REPO_NAME=your-organization/your-repo
 MOIRAI_GITHUB_ACCESS_TOKEN=your-generated-token
 ```
 
+We also support Rails credentials. The environment variables need to be stored in a slightly different way to adhere to convention. For example:
+
+```env
+moirai:
+  github_repo_name: your-organization/your-repo
+  github_access_token: your-generated-token
+```
+
 #### 4. Triggering the pull request creation
 
 Moirai will now be able to use this Personal Access Token to create a pull request on GitHub when a translation is updated.
 
-To trigger this, you can press the `Create Pull Request` button once you have made your changes.
+To trigger this, you can press the `Create or update PR` button once you have made your changes.
 
 ### Authentication
 

@@ -6,8 +6,8 @@ class Moirai::PullRequestCreator
   end
 
   def initialize
-    @github_repo_name = ENV["MOIRAI_GITHUB_REPO_NAME"]
-    @github_access_token = ENV["MOIRAI_GITHUB_ACCESS_TOKEN"]
+    @github_repo_name = ENV["MOIRAI_GITHUB_REPO_NAME"] || Rails.application.credentials.dig(:moirai, :github_repo_name)
+    @github_access_token = ENV["MOIRAI_GITHUB_ACCESS_TOKEN"] || Rails.application.credentials.dig(:moirai, :github_access_token)
     @client = Octokit::Client.new(
       access_token: @github_access_token
     )
