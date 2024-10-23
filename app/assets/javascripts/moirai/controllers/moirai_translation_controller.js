@@ -1,6 +1,10 @@
 Stimulus.register(
   "moirai-translation",
   class extends Controller {
+    click(event) {
+      event.preventDefault()
+    }
+
     submit(event) {
       const {filePath, key} = event.target.dataset
 
