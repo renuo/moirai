@@ -109,8 +109,6 @@ MOIRAI_BASICAUTH_PASSWORD=moirai
 
 ## Development
 
-## Development
-
 1. Check out the repo:
     ```bash
     git clone git@github.com:renuo/moirai.git
