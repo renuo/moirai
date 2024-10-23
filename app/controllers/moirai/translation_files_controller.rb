@@ -18,9 +18,7 @@ module Moirai
     end
 
     def create_or_update
-      if (translation = Translation.find_by(file_path: translation_params[:file_path],
-        key: translation_params[:key],
-        locale: @file_handler.get_first_key(translation_params[:file_path])))
+      if (translation = Translation.find_by(file_path: translation_params[:file_path], key: translation_params[:key]))
         handle_update(translation)
       else
         handle_create
@@ -55,15 +53,26 @@ module Moirai
     end
 
     def handle_create
-      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
-      if translation_from_file[translation_params[:key]] == translation_params[:value]
-        flash.alert = "Translation #{translation_params[:key]} already exists."
-        redirect_to_translation_file(translation_params[:file_path])
-        return
+      binding.irb
+      unless translation_params[:file_path].present?
+        locale = translation_params[:locale] || I18n.locale
+        key = translation_params[:key] || I18n.locale
+        translation_params[:file_path] = Rails.root.join("locales", "moirai_#{locale}_#{key}.yml").to_s
+      end
+
+      if File.exists?(translation_params[:file_path])
+        translation_from_file = @file_handler.parse_file(translation_params[:file_path])
+        if translation_from_file[translation_params[:key]] == translation_params[:value]
+          flash.alert = "Translation #{translation_params[:key]} already exists."
+          redirect_to_translation_file(translation_params[:file_path])
+          return
+        end
       end
 
       translation = Translation.new(translation_params)
-      translation.locale = @file_handler.get_first_key(translation_params[:file_path])
+      translation.file_path ||= invent_file_path(translation.locale, translation.key)
+      translation.locale = File.exists? translation.file_path ? @file_handler.get_first_key(translation_params[:file_path]) : translation.locale
+
       if translation.save
         flash.notice = "Translation #{translation.key} was successfully created."
       else
@@ -71,6 +80,10 @@ module Moirai
       end
 
       redirect_to_translation_file(translation.file_path)
+    end
+
+    def invent_file_path(locale, key)
+      Rails.root.join("locales", "moirai_#{locale}_#{key}.yml").to_s
     end
 
     def redirect_to_translation_file(file_path)
@@ -83,7 +96,9 @@ module Moirai
     end
 
     def translation_params
-      params.require(:translation).permit(:key, :locale, :value, :file_path)
+      strong_params = params.require(:translation).permit(:key, :locale, :value, :file_path)
+      strong_params[:file_path] ||= invent_file_path(strong_params[:locale], strong_params[:key])
+      strong_params
     end
 
     def load_file_handler
