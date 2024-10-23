@@ -49,6 +49,19 @@ bin/rails db:migrate
 If you mounted Moirai under "/moirai", head there and you will find a list of all the files containing texts that can be translated.
 Open a file, change the value of translations, and press ENTER to update the translation and see it immediately changed on the application.
 
+### Inline editing
+
+By default, inline editing is disabled. To enable it, set the `moirai=true` query parameter in the URL.
+If you want to only allow specific users to perform inline editing, you can override the `moirai_edit_enabled?` method in your application helper.
+
+```ruby
+module ApplicationHelper
+  def moirai_edit_enabled?
+    params[:moirai] == "true" || current_user&.admin?
+  end
+end
+```
+
 ### Automatic PR creation with Octokit (**optional**)
 
 If you would like Moirai to automatically create a pull request on GitHub to keep translations synchronized with the codebase, 
