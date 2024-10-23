@@ -18,9 +18,7 @@ module Moirai
     end
 
     def create_or_update
-      if (translation = Translation.find_by(file_path: translation_params[:file_path],
-        key: translation_params[:key],
-        locale: @file_handler.get_first_key(translation_params[:file_path])))
+      if (translation = Translation.find_by(file_path: existing_or_invented_path(translation_params[:file_path]), key: translation_params[:key]))
         handle_update(translation)
       else
         handle_create
@@ -36,13 +34,26 @@ module Moirai
 
     private
 
+    def existing_or_invented_path(file_path)
+      File.exist?(file_path) ? file_path : invent_file_path(translation_params[:key], I18n.locale)
+    end
+
     def handle_update(translation)
-      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
-      if translation_from_file[translation.key] == translation_params[:value] || translation_params[:value].blank?
+      if translation.value.strip.blank?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
         redirect_to_translation_file(translation.file_path)
         return
+      end
+
+      if File.exist? translation_params[:file_path]
+        translation_from_file = @file_handler.parse_file(translation_params[:file_path])
+        if translation_from_file[translation.key].strip == translation_params[:value].strip
+          translation.destroy
+          flash.notice = "Translation #{translation.key} was successfully deleted."
+          redirect_to_translation_file(translation.file_path)
+          return
+        end
       end
 
       if translation.update(value: translation_params[:value])
@@ -55,22 +66,30 @@ module Moirai
     end
 
     def handle_create
-      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
-      if translation_from_file[translation_params[:key]] == translation_params[:value]
-        flash.alert = "Translation #{translation_params[:key]} already exists."
-        redirect_to_translation_file(translation_params[:file_path])
-        return
+      if File.exist?(translation_params[:file_path])
+        translation_from_file = @file_handler.parse_file(translation_params[:file_path])
+        if translation_from_file[translation_params[:key]] == translation_params[:value]
+          flash.alert = "Translation #{translation_params[:key]} already exist."
+          redirect_to_translation_file(translation_params[:file_path])
+          return
+        end
       end
 
-      translation = Translation.new(translation_params)
-      translation.locale = @file_handler.get_first_key(translation_params[:file_path])
-      if translation.save
+      translation = Translation.new(translation_params.merge(locale: I18n.locale)) # TODO: remove locale
+      translation.file_path = existing_or_invented_path(translation.file_path)
+
+      if translation.save!
         flash.notice = "Translation #{translation.key} was successfully created."
       else
+        Rails.logger.error(translation.errors.full_messages)
         flash.alert = translation.errors.full_messages.join(", ")
       end
 
       redirect_to_translation_file(translation.file_path)
+    end
+
+    def invent_file_path(locale, key)
+      Rails.root.join("config", "locales", "moirai_#{locale}_#{key}.yml").to_s
     end
 
     def redirect_to_translation_file(file_path)
@@ -83,7 +102,7 @@ module Moirai
     end
 
     def translation_params
-      params.require(:translation).permit(:key, :locale, :value, :file_path)
+      params.require(:translation).permit(:key, :value, :file_path)
     end
 
     def load_file_handler
