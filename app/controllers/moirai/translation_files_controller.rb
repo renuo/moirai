@@ -51,7 +51,7 @@ module Moirai
         flash.alert = translation.errors.full_messages.join(", ")
       end
 
-      redirect_to_translation_file(translation.file_path)
+      success_response(translation)
     end
 
     def handle_create
@@ -70,7 +70,18 @@ module Moirai
         flash.alert = translation.errors.full_messages.join(", ")
       end
 
-      redirect_to_translation_file(translation.file_path)
+      success_response(translation)
+    end
+
+    def success_response(translation)
+      respond_to do |format|
+        format.json do
+          render json: {}
+        end
+        format.all do
+          redirect_to_translation_file(translation.file_path)
+        end
+      end
     end
 
     def redirect_to_translation_file(file_path)
