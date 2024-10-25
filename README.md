@@ -67,8 +67,7 @@ Pin the controller in `config/importmap.rb`
 pin "controllers/moirai_translation_controller", to: "moirai_translation_controller.js"
 ```
 
-I am not entirely sure about all other possible configuration possibilities, 
-so in the worst case copy/paste [the stimulus controller](app/assets/javascripts/moirai_translation_controller.js) in your app.
+If you’re unsure about all the possible configuration options, you can simply copy and paste the stimulus controller into your app as a fallback. 
 
 ### Automatic PR creation with Octokit (**optional**)
 
