@@ -6,10 +6,9 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-    <%= javascript_include_tag "moirai/application", "data-turoblinks-track": "reload", type: "module" %>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" async="true" defer="true">
+  <%= javascript_importmap_tags %>
 </head>
-
 
 <body>
 <header>

@@ -46,6 +46,7 @@ Open a file, change the value of translations, and press ENTER to update the tra
 ### Inline editing
 
 By default, inline editing is disabled. To enable it, set the `moirai=true` query parameter in the URL.
+
 If you want to only allow specific users to perform inline editing, you can override the `moirai_edit_enabled?` method in your application helper.
 
 ```ruby
@@ -55,6 +56,18 @@ module ApplicationHelper
   end
 end
 ```
+
+You also need to have the moirai_translations_controller.js Stimulus Controller initialized.
+
+If you use importmaps:
+
+Pin the controller in `config/importmap.rb`
+
+```ruby
+pin "controllers/moirai_translation_controller", to: "moirai_translation_controller.js"
+```
+
+If you’re unsure about all the possible configuration options, you can simply copy and paste the stimulus controller into your app as a fallback. 
 
 ### Automatic PR creation with Octokit (**optional**)
 
