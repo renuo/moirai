@@ -25,13 +25,17 @@ module Moirai
             value = original_translate(key, **options)
 
             if moirai_edit_enabled?
-              moirai_translations = I18n.backend.backends.find { |b| b.respond_to?(:moirai_translations) }.moirai_translations
-              file_path = moirai_translations[I18n.locale][scope_key_by_partial(key)]
+              @key_finder ||= Moirai::KeyFinder.new
+              file_path = @key_finder.file_path_for(scope_key_by_partial(key), locale: I18n.locale)
 
-              render(partial: "moirai/translation_files/form",
-                locals: {key: scope_key_by_partial(key),
-                         file_path: file_path,
-                         value: value})
+              if file_path.present?
+                render(partial: "moirai/translation_files/form",
+                  locals: {key: scope_key_by_partial(key),
+                           file_path: file_path,
+                           value: value})
+              else
+                value
+              end
             else
               value
             end
