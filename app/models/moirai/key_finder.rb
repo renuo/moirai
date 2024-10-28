@@ -12,7 +12,7 @@ module Moirai
     end
 
     def file_path_for(key, locale: I18n.locale)
-      moirai_translations[locale][key]
+      moirai_translations[locale.to_sym][key]
     end
 
     def store_moirai_translations(filename, locale, data, options)
