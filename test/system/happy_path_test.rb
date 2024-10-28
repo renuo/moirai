@@ -22,4 +22,29 @@ class HappyPathTest < ApplicationSystemTestCase
     assert_text page, "Italianese"
     refute_text page, "Italienisch"
   end
+
+  def test_inline_editors
+    visit "/?moirai=true"
+    assert_key_editable page, "buttons.very.much.nested.only_english"
+    refute_key_editable page, "buttons.very.much.nested.only_italian"
+    refute_key_editable page, "buttons.very.much.nested.only_german"
+
+    visit "/?locale=de&moirai=true"
+    refute_key_editable page, "buttons.very.much.nested.only_english"
+    refute_key_editable page, "buttons.very.much.nested.only_italian"
+    assert_key_editable page, "buttons.very.much.nested.only_german"
+
+    visit "/?locale=it&moirai=true"
+    refute_key_editable page, "buttons.very.much.nested.only_english"
+    assert_key_editable page, "buttons.very.much.nested.only_italian"
+    refute_key_editable page, "buttons.very.much.nested.only_german"
+  end
+
+  def assert_key_editable(page, key)
+    assert_selector page, "[data-controller=\"moirai-translation\"][data-key=\"#{key}\"]"
+  end
+
+  def refute_key_editable(page, key)
+    refute_selector page, "[data-controller=\"moirai-translation\"][data-key=\"#{key}\"]"
+  end
 end
