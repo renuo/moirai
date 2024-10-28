@@ -11,8 +11,7 @@ module Moirai
       end
 
       def mount_engine
-        route 'mount Moirai::Engine => "/moirai", as: "moirai"
-        '
+        route 'mount Moirai::Engine => "/moirai", as: "moirai"'
       end
     end
   end
