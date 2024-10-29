@@ -59,7 +59,6 @@ module Moirai
 
       changes = @translation_dumper.call
       assert_equal 2, changes.length
-
       assert_equal @de_relative_file_path, changes[0][:file_path]
       de_content = YAML.load(changes[0][:content], symbolize_names: true)
       assert_equal "Italianese", de_content.dig(:de, :locales, :italian)
@@ -67,6 +66,22 @@ module Moirai
       assert_equal @it_relative_file_path, changes[1][:file_path]
       it_content = YAML.load(changes[1][:content], symbolize_names: true)
       assert_equal "Germanese", it_content.dig(:it, :locales, :german)
+    end
+
+    test "it takes the latest of two changes" do
+      Moirai::Translation.create!(locale: "de",
+        key: "locales.italian",
+        value: "Italianese Recent")
+      Moirai::Translation.create!(locale: "de",
+        key: "locales.italian",
+        value: "Italianese Old",
+        created_at: 2.days.ago)
+
+      changes = @translation_dumper.call
+      assert_equal 1, changes.length
+      assert_equal @de_relative_file_path, changes[0][:file_path]
+      content = YAML.load(changes[0][:content], symbolize_names: true)
+      assert_equal "Italianese Recent", content.dig(:de, :locales, :italian)
     end
   end
 end
