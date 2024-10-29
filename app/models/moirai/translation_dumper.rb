@@ -39,7 +39,6 @@ module Moirai
       yaml = YAML.load_file(file_path)
 
       translations.each do |translation|
-        puts "checking #{translation.value}"
         keys = [translation.locale] + translation.key.split(".")
 
         node = yaml
