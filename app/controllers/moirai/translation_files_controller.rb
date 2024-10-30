@@ -16,6 +16,7 @@ module Moirai
     def show
       @translation_keys = @file_handler.parse_file(@decoded_path)
       @locale = @file_handler.get_first_key(@decoded_path)
+      @translations = Moirai::Translation.find_by_file_path(@decoded_path)
     end
 
     def create_or_update
