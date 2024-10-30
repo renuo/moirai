@@ -12,7 +12,6 @@
       </tr>
     </thead>
     <tbody>
-      <% translations = Moirai::Translation.find_by_file_path(@decoded_path) %>
       <% @translation_keys.each do |key, value| %>
         <% translation = @translations.find { |t| t.key == key } %>
 
