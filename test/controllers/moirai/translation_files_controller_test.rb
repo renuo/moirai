@@ -29,8 +29,15 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "#create_or_update with new translation" do
-    post "#{translation_file_url("config/locales/de.yml")}/translations", params: { translation: { key: "new_key", locale: "en", value: "new_value" } }
+  # existing file with existing translation, with no change record present
+  test "#create_or_update with new translation record" do
+    translation_count_before = Moirai::Translation.count
+    post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "en", value: "New Translation" } }
+
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/en.yml")
+    assert_equal "Translation locales.german was successfully created.", flash[:notice]
+    assert_equal translation_count_before + 1, Moirai::Translation.count
   end
 end
 

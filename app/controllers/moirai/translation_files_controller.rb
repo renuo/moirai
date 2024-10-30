@@ -100,7 +100,7 @@ module Moirai
     end
 
     def translation_params
-      params.require(:translation).permit(:key, :locale, :value, :file_path)
+      params.require(:translation).permit(:key, :locale, :value)
     end
 
     def load_file_handler
