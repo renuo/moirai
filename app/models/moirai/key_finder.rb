@@ -13,6 +13,7 @@ module Moirai
 
     # TODO: remove locale default
     def file_path_for(key, locale: I18n.locale)
+      locale ||= I18n.locale
       moirai_translations[locale.to_sym][key]
     end
 

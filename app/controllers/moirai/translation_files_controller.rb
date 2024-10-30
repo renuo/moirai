@@ -54,6 +54,11 @@ module Moirai
     end
 
     def handle_create
+      if translation_params[:value].blank?
+        flash.alert = "Translation value can't be blank."
+        return
+      end
+
       file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
 
       if translation_same_as_in_file?
