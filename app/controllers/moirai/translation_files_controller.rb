@@ -37,7 +37,7 @@ module Moirai
     private
 
     def handle_update(translation)
-      if translation_params[:value].blank? || translation_same_as_in_file?(translation.key, translation_params[:value], translation.find_file_path)
+      if translation_params[:value].blank? || translation_same_as_in_file?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
         redirect_to_translation_file(translation.find_file_path)
@@ -56,7 +56,7 @@ module Moirai
     def handle_create
       file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
 
-      if translation_same_as_in_file?(translation_params[:key], translation_params[:value], file_path)
+      if translation_same_as_in_file?
         flash.alert = "Translation #{translation_params[:key]} already exists."
         redirect_to_translation_file(file_path)
         return
@@ -107,11 +107,13 @@ module Moirai
       @file_handler = Moirai::TranslationFileHandler.new
     end
 
-    def translation_same_as_in_file?(key, value, file_path)
+    def translation_same_as_in_file?
+      file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
+
       return false if file_path.blank?
       return false unless File.exist?(file_path)
 
-      value == @file_handler.parse_file(file_path)[key]
+      translation_params[:value] == @file_handler.parse_file(file_path)[translation_params[:key]]
     end
   end
 end
