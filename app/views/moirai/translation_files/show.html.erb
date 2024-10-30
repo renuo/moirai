@@ -24,7 +24,7 @@
             <% end %>
           </td>
           <td>
-            <%= form_for translation&.presence || Moirai::Translation.new, url: moirai_create_or_update_translation_path do |f| %>
+            <%= form_for translation&.presence || Moirai::Translation.new, url: moirai_create_or_update_translation_path, method: :post do |f| %>
               <%= f.hidden_field :key, value: key %>
               <%= f.hidden_field :locale, value: @locale %>
               <%= f.text_field :value, value: translation&.value || value %>
