@@ -18,9 +18,9 @@ class Moirai::PullRequestCreator
     default_branch = github_repository.default_branch
 
     if moirai_branch_exists?
-      puts "Branch #{BRANCH_NAME} already exists - the branch will be updated with the new changes"
+      Rails.logger.debug { "Branch #{BRANCH_NAME} already exists - the branch will be updated with the new changes" }
     else
-      puts "Branch #{BRANCH_NAME} does not exist - creating branch"
+      Rails.logger.debug { "Branch #{BRANCH_NAME} does not exist - creating branch" }
       default_branch_ref = @github_client.ref(@github_repo_name, "heads/#{default_branch}")
       latest_commit_sha = default_branch_ref.object.sha
 
