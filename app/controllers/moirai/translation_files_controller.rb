@@ -16,7 +16,7 @@ module Moirai
     def show
       @translation_keys = @file_handler.parse_file(@decoded_path)
       @locale = @file_handler.get_first_key(@decoded_path)
-      @translations = Moirai::Translation.find_by_file_path(@decoded_path)
+      @translations = Moirai::Translation.by_file_path(@decoded_path)
     end
 
     def create_or_update
@@ -91,6 +91,11 @@ module Moirai
 
     def set_translation_file
       @file_path = @file_handler.file_hashes[params[:id]]
+      if @file_path.nil?
+        flash.alert = "File not found"
+        redirect_to moirai_translation_files_path, status: :not_found
+        return
+      end
       @decoded_path = CGI.unescape(@file_path)
     end
 
