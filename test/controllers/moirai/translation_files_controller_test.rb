@@ -1,22 +1,23 @@
 require "test_helper"
 
-class TranslationFilesController < ActionDispatch::IntegrationTest
+class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @translation = Moirai::Translation.create(key: "locales.german", locale: "de", value: "Neudeutsch")
   end
 
-  test "#index" do
+  # Index action tests
+  test "index displays translation files" do
     get "/moirai"
 
     assert_response :success
-
     assert_select "h1", "Translation files"
     assert_includes response.body, "de.yml"
     assert_includes response.body, "en.yml"
     assert_includes response.body, "it.yml"
   end
 
-  test "#show exists" do
+  # Show action tests
+  test "show existing translation file" do
     get translation_file_url("config/locales/en.yml")
     assert_response :success
 
@@ -24,12 +25,13 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_select "code", "./config/locales/en.yml"
   end
 
-  test "#show does not exist" do
+  test "show non-existing translation file" do
     get "/moirai/translation_files/does_not_exist"
     assert_response :not_found
   end
 
-  test "create with valid params" do
+  # Create action tests
+  test "create translation with valid params" do
     translation_count_before = Moirai::Translation.count
     post "/moirai/translation_files", params: {translation: {key: "locales.german", locale: "en", value: "New Translation"}}
 
@@ -41,7 +43,7 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal translation_count_before + 1, Moirai::Translation.count
   end
 
-  test "create with same value" do
+  test "create translation with existing value" do
     translation_count_before = Moirai::Translation.count
 
     post "/moirai/translation_files", params: {translation: {key: "locales.german", locale: "en", value: "German"}}
@@ -52,7 +54,7 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal translation_count_before, Moirai::Translation.count
   end
 
-  test "create with invalid params" do
+  test "create translation with invalid params" do
     translation_count_before = Moirai::Translation.count
 
     post "/moirai/translation_files", params: {translation: {key: "", locale: "", value: ""}}
@@ -62,7 +64,8 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal translation_count_before, Moirai::Translation.count
   end
 
-  test "update with blank value" do
+  # Update action tests
+  test "update translation with blank value" do
     count_before = Moirai::Translation.count
     post "/moirai/translation_files", params: {translation: {key: "locales.german", locale: "de", value: ""}}
 
@@ -72,7 +75,7 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal count_before - 1, Moirai::Translation.count
   end
 
-  test "update with non blank new value" do
+  test "update translation with non-blank new value" do
     post "/moirai/translation_files", params: {translation: {key: "locales.german", locale: "de", value: "Hochdeutsch"}}
 
     assert_response :redirect
@@ -82,7 +85,7 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal Moirai::Translation.last.value, "Hochdeutsch"
   end
 
-  test "update with value from file" do
+  test "update translation with value from file" do
     count_before = Moirai::Translation.count
     post "/moirai/translation_files", params: {translation: {key: "locales.german", locale: "de", value: "Deutsch"}}
 
@@ -91,11 +94,11 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal "Translation locales.german was successfully deleted.", flash[:notice]
     assert_equal count_before - 1, Moirai::Translation.count
   end
-end
 
-private
+  private
 
-def translation_file_url(local_path)
-  absolute_path = Rails.root.join(local_path).to_s
-  "/moirai/translation_files/#{Digest::SHA256.hexdigest(absolute_path)}"
+  def translation_file_url(local_path)
+    absolute_path = Rails.root.join(local_path).to_s
+    "/moirai/translation_files/#{Digest::SHA256.hexdigest(absolute_path)}"
+  end
 end
