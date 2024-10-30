@@ -37,12 +37,6 @@ module Moirai
     private
 
     def handle_update(translation)
-      unless File.exist?(translation.find_file_path)
-        flash.alert = "Locale file could not be found for #{translation.key}"
-        redirect_to moirai_translation_files_path, status: :unprocessable_entity
-        return
-      end
-
       if translation_params[:value].blank? || translation_same_as_in_file?(translation.key, translation_params[:value], translation.find_file_path)
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
