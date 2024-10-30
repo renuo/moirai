@@ -5,7 +5,7 @@ module Moirai
     validates_presence_of :key, :locale
 
     def find_file_path
-      @key_finder = KeyFinder.new
+      @key_finder ||= KeyFinder.new
       @key_finder.file_path_for(key, locale: locale)
     end
 
