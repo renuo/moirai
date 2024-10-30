@@ -65,7 +65,17 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
 
   # update tests
 
-  test "#create_or_update with existing translation record" do
+  test "update with blank value" do
+    count_before = Moirai::Translation.count
+    post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "de", value: "" } }
+
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/de.yml")
+    assert_equal "Translation locales.german was successfully deleted.", flash[:notice]
+    assert_equal count_before - 1, Moirai::Translation.count
+  end
+
+  test "update with non blank new value" do
     post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "de", value: "Hochdeutsch" } }
 
     assert_response :redirect
@@ -75,9 +85,9 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal Moirai::Translation.last.value, "Hochdeutsch"
   end
 
-  test "#create_or_update for existing translation with empty translation value restores translation from file" do
+  test "update with value from file" do
     count_before = Moirai::Translation.count
-    post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "de", value: "" } }
+    post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "de", value: "Deutsch" } }
 
     assert_response :redirect
     assert_redirected_to translation_file_url("config/locales/de.yml")
