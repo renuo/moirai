@@ -17,7 +17,7 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
   end
 
   test "#show exists" do
-    get "/moirai/translation_files/#{Digest::SHA256.hexdigest(Rails.root.join("config/locales/en.yml").to_s)}"
+    get translation_file_url("config/locales/en.yml")
     assert_response :success
 
     assert_select "h1", "Update translations"
@@ -28,4 +28,15 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     get "/moirai/translation_files/does_not_exist"
     assert_response :not_found
   end
+
+  test "#create_or_update with new translation" do
+    post "#{translation_file_url("config/locales/de.yml")}/translations", params: { translation: { key: "new_key", locale: "en", value: "new_value" } }
+  end
+end
+
+private
+
+def translation_file_url(local_path)
+  absolute_path = Rails.root.join(local_path).to_s
+  "/moirai/translation_files/#{Digest::SHA256.hexdigest(absolute_path)}"
 end
