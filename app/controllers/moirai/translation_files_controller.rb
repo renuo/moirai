@@ -37,8 +37,13 @@ module Moirai
     private
 
     def handle_update(translation)
-      translation_from_file = @file_handler.parse_file(translation.find_file_path)
-      if translation_from_file[translation.key] == translation_params[:value] || translation_params[:value].blank?
+      unless File.exist?(translation.find_file_path)
+        flash.alert = "Locale file could not be found for #{translation.key}"
+        redirect_to moirai_translation_files_path, status: :unprocessable_entity
+        return
+      end
+
+      if translation_params[:value].blank? || translation_same_as_in_file?(translation.key, translation_params[:value], translation.find_file_path)
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
         redirect_to_translation_file(translation.find_file_path)
@@ -56,22 +61,23 @@ module Moirai
 
     def handle_create
       file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
-      translation_from_file = @file_handler.parse_file(file_path)
-      if translation_from_file[translation_params[:key]] == translation_params[:value]
+
+      if translation_same_as_in_file?(translation_params[:key], translation_params[:value], file_path)
         flash.alert = "Translation #{translation_params[:key]} already exists."
         redirect_to_translation_file(file_path)
         return
       end
 
       translation = Translation.new(translation_params)
-      translation.locale = @file_handler.get_first_key(file_path)
+      translation.locale = @file_handler.get_first_key(file_path) if file_path.present?
+
       if translation.save
         flash.notice = "Translation #{translation.key} was successfully created."
+        success_response(translation)
       else
         flash.alert = translation.errors.full_messages.join(", ")
+        redirect_to moirai_translation_files_path, status: :unprocessable_entity
       end
-
-      success_response(translation)
     end
 
     def success_response(translation)
@@ -105,6 +111,13 @@ module Moirai
 
     def load_file_handler
       @file_handler = Moirai::TranslationFileHandler.new
+    end
+
+    def translation_same_as_in_file?(key, value, file_path)
+      return false if file_path.blank?
+      return false unless File.exist?(file_path)
+
+      value == @file_handler.parse_file(file_path)[key]
     end
   end
 end

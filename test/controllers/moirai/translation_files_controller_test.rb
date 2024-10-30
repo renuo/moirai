@@ -29,8 +29,9 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  # existing file with existing translation, with no change record present
-  test "#create_or_update with new translation record" do
+  # create tests
+
+  test "create with valid params" do
     translation_count_before = Moirai::Translation.count
     post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "en", value: "New Translation" } }
 
@@ -40,6 +41,29 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal Moirai::Translation.last.key, "locales.german"
     assert_equal Moirai::Translation.last.value, "New Translation"
   end
+
+  test "create with same value" do
+    translation_count_before = Moirai::Translation.count
+
+    post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "en", value: "German" } }
+
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/en.yml")
+    assert_equal "Translation locales.german already exists.", flash[:alert]
+    assert_equal translation_count_before, Moirai::Translation.count
+  end
+
+  test "create with invalid params" do
+    translation_count_before = Moirai::Translation.count
+
+    post "/moirai/translation_files", params: { translation: { key: "", locale: "", value: "" } }
+
+    assert_response :unprocessable_entity
+    assert_equal "Key can't be blank, Locale can't be blank", flash[:alert]
+    assert_equal translation_count_before, Moirai::Translation.count
+  end
+
+  # update tests
 
   test "#create_or_update with existing translation record" do
     post "/moirai/translation_files", params: { translation: { key: "locales.german", locale: "de", value: "Hochdeutsch" } }
