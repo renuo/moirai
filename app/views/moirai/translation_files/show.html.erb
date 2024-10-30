@@ -14,7 +14,7 @@
     <tbody>
       <% translations = Moirai::Translation.find_by_file_path(@decoded_path) %>
       <% @translation_keys.each do |key, value| %>
-        <% translation = translations.find { |t| t.key == key } %>
+        <% translation = @translations.find { |t| t.key == key } %>
 
         <tr>
           <td>
@@ -25,9 +25,8 @@
             <% end %>
           </td>
           <td>
-            <%= form_for Moirai::Translation.new, url: moirai_create_or_update_translation_path do |f| %>
+            <%= form_for translation.presence? || Moirai::Translation.new, url: moirai_create_or_update_translation_path do |f| %>
               <%= f.hidden_field :key, value: key %>
-              <%= f.hidden_field :file_path, value: @decoded_path %>
               <%= f.hidden_field :locale, value: @locale %>
               <%= f.text_field :value, value: translation&.value || value %>
               <%= f.submit 'Update', style: 'display: none;' %>
