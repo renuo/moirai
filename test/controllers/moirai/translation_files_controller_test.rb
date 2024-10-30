@@ -29,8 +29,6 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  # create tests
-
   test "create with valid params" do
     translation_count_before = Moirai::Translation.count
     post "/moirai/translation_files", params: {translation: {key: "locales.german", locale: "en", value: "New Translation"}}
@@ -63,8 +61,6 @@ class TranslationFilesController < ActionDispatch::IntegrationTest
     assert_equal "Key can't be blank, Locale can't be blank", flash[:alert]
     assert_equal translation_count_before, Moirai::Translation.count
   end
-
-  # update tests
 
   test "update with blank value" do
     count_before = Moirai::Translation.count
