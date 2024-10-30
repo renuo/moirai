@@ -38,13 +38,12 @@ module Moirai
       default_branch = repository.default_branch
       assert_equal "main", default_branch
       assert @pull_request_creator.moirai_branch_exists?
-      pr = @pull_request_creator.open_pull_request
+      pr = @pull_request_creator.existing_open_pull_request
       assert pr
 
       @pull_request_creator.github_client.update_pull_request(@pull_request_creator.github_repo_name, pr.number, state: "closed")
 
-      pr = @pull_request_creator.open_pull_request
-      refute pr
+      refute @pull_request_creator.existing_open_pull_request
     end
   end
 end

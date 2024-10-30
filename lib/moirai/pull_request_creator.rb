@@ -1,11 +1,9 @@
 class Moirai::PullRequestCreator
-  BRANCH_NAME = "moirai-translations"
-
   def self.available?
     !!defined?(Octokit)
   end
 
-  attr_reader :github_repo_name, :github_access_token, :github_client, :github_repository
+  attr_reader :github_repo_name, :github_access_token, :github_client, :github_repository, :branch_name
 
   def initialize
     @github_repo_name = ENV["MOIRAI_GITHUB_REPO_NAME"] || Rails.application.credentials.dig(:moirai, :github_repo_name)
@@ -15,16 +13,17 @@ class Moirai::PullRequestCreator
   end
 
   def create_pull_request(translations_array)
+    @branch_name = "moirai-translations-#{Time.current.strftime("%F-%H-%M-%S")}"
     default_branch = github_repository.default_branch
 
     if moirai_branch_exists?
-      Rails.logger.debug { "Branch #{BRANCH_NAME} already exists - the branch will be updated with the new changes" }
+      Rails.logger.debug { "Branch #{branch_name} already exists - the branch will be updated with the new changes" }
     else
-      Rails.logger.debug { "Branch #{BRANCH_NAME} does not exist - creating branch" }
+      Rails.logger.debug { "Branch #{branch_name} does not exist - creating branch" }
       default_branch_ref = @github_client.ref(@github_repo_name, "heads/#{default_branch}")
       latest_commit_sha = default_branch_ref.object.sha
 
-      @github_client.create_ref(@github_repo_name, "heads/#{BRANCH_NAME}", latest_commit_sha)
+      @github_client.create_ref(@github_repo_name, "heads/#{branch_name}", latest_commit_sha)
     end
 
     translations_array.each do |translation_hash|
@@ -36,11 +35,11 @@ class Moirai::PullRequestCreator
       update_file(converted_file_path, translation_hash[:content])
     end
 
-    unless open_pull_request.present?
+    unless existing_open_pull_request.present?
       pull_request = @github_client.create_pull_request(
         @github_repo_name,
         default_branch,
-        BRANCH_NAME,
+        branch_name,
         "Adding new content by Moirai",
         "BODY - This is a pull request created by Moirai"
       )
@@ -50,15 +49,15 @@ class Moirai::PullRequestCreator
   end
 
   def moirai_branch_exists?
-    @github_client.ref(@github_repo_name, "heads/#{BRANCH_NAME}")
+    @github_client.ref(@github_repo_name, "heads/#{branch_name}")
     true
   rescue Octokit::NotFound
     false
   end
 
-  def open_pull_request
+  def existing_open_pull_request
     @github_client.pull_requests(@github_repo_name).find do |pull_request|
-      (pull_request.head.ref == BRANCH_NAME) && (pull_request.state == "open")
+      (pull_request.head.ref == branch_name) && (pull_request.state == "open")
     end
   end
 
@@ -66,7 +65,7 @@ class Moirai::PullRequestCreator
 
   def update_file(path, content)
     # TODO: check what happens if branch exists
-    file = @github_client.contents(@github_repo_name, path: path, ref: BRANCH_NAME)
+    file = @github_client.contents(@github_repo_name, path: path, ref: branch_name)
     file_sha = file.sha
 
     @github_client.update_contents(
@@ -75,7 +74,7 @@ class Moirai::PullRequestCreator
       "Updating translations for #{path} by Moirai",
       file_sha,
       content,
-      branch: BRANCH_NAME
+      branch: branch_name
     )
   rescue Octokit::NotFound
     @github_client.create_contents(
@@ -83,7 +82,7 @@ class Moirai::PullRequestCreator
       path,
       "Creating translations for #{path} by Moirai",
       content,
-      branch: BRANCH_NAME
+      branch: branch_name
     )
   end
 end
