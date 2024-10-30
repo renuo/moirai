@@ -40,7 +40,7 @@ module Moirai
       if translation_params[:value].blank? || translation_same_as_in_file?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
-        redirect_to_translation_file(translation.find_file_path)
+        redirect_to_translation_file(translation.file_path)
         return
       end
 
@@ -80,7 +80,7 @@ module Moirai
           render json: {}
         end
         format.all do
-          redirect_to_translation_file(translation.find_file_path)
+          redirect_to_translation_file(translation.file_path)
         end
       end
     end
