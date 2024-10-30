@@ -166,6 +166,12 @@ end
 
 4. Set your environment variables using the newly created `.env` file.
 
+You will need a repository to test against and a token. Generate a new Fine-GRained Personal access token and give the necessary permissions to your repository.
+See the image below as an example:
+
+![](docs/github_settings.png)
+
+
 5. Run the tests:
     ```bash
     bin/check
