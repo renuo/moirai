@@ -3,8 +3,7 @@ require "test_helper"
 module Moirai
   class TranslationTest < ActiveSupport::TestCase
     def setup
-      @valid_translation = Translation.new(key: "hello", locale: "en", file_path: "/valid/path/to/file")
-      @invalid_translation = Translation.new(key: "hello", locale: "en", file_path: "/invalid/path/to/file")
+      @valid_translation = Translation.new(key: "hello", locale: "en", value: "Hello")
     end
 
     test ".by_file_path" do
@@ -32,6 +31,12 @@ module Moirai
       @valid_translation.locale = nil
       assert_not @valid_translation.valid?
       assert_includes @valid_translation.errors[:locale], "can't be blank"
+    end
+
+    test "should be invalid without value" do
+      @valid_translation.value = nil
+      assert_not @valid_translation.valid?
+      assert_includes @valid_translation.errors[:value], "can't be blank"
     end
   end
 end

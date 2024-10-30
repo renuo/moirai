@@ -54,11 +54,6 @@ module Moirai
     end
 
     def handle_create
-      if translation_params[:value].blank?
-        flash.alert = "Translation value can't be blank."
-        return
-      end
-
       file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
 
       if translation_same_as_in_file?
@@ -75,7 +70,7 @@ module Moirai
         success_response(translation)
       else
         flash.alert = translation.errors.full_messages.join(", ")
-        redirect_to moirai_translation_files_path, status: :unprocessable_entity
+        redirect_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
       end
     end
 

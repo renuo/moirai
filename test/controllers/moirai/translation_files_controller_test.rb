@@ -60,7 +60,7 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
     post translation_files_url, params: {translation: {key: "", locale: "", value: ""}}
 
     assert_response :unprocessable_entity
-    assert_equal "Key can't be blank, Locale can't be blank", flash[:alert]
+    assert_equal "Key can't be blank, Locale can't be blank, Value can't be blank", flash[:alert]
     assert_equal translation_count_before, Moirai::Translation.count
   end
 

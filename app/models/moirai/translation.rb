@@ -2,7 +2,7 @@
 
 module Moirai
   class Translation < Moirai::ApplicationRecord
-    validates_presence_of :key, :locale
+    validates_presence_of :key, :locale, :value
 
     def file_path
       @key_finder ||= KeyFinder.new
