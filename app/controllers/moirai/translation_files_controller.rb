@@ -55,7 +55,6 @@ module Moirai
 
     def handle_create
       file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
-
       if translation_same_as_in_file?
         flash.alert = "Translation #{translation_params[:key]} already exists."
         redirect_to_translation_file(file_path)
@@ -70,7 +69,12 @@ module Moirai
         success_response(translation)
       else
         flash.alert = translation.errors.full_messages.join(", ")
-        redirect_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
+        if file_path.present?
+          flash.alert = "Translation #{translation.key} already exists."
+          redirect_back_or_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
+        else
+          redirect_back_or_to moirai_translation_files_path, status: :unprocessable_entity
+        end
       end
     end
 
