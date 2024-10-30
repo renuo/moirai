@@ -10,9 +10,7 @@ module Moirai
     end
 
     def self.by_file_path(file_path)
-      pp file_path
       key_finder = KeyFinder.new
-      pp key_finder.moirai_translations
       all.select { |translation| key_finder.file_path_for(translation.key, locale: translation.locale) == file_path }
     end
   end
