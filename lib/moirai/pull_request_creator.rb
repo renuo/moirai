@@ -13,7 +13,7 @@ class Moirai::PullRequestCreator
   end
 
   def create_pull_request(translations_array)
-    @branch_name = "moirai-translations-#{Time.current.strftime("%F-%H-%M-%S")}"
+    @branch_name = "moirai-translations-#{Time.current.strftime("%F-%H-%M-%S")}-#{rand(1000..9999)}"
     default_branch = github_repository.default_branch
 
     if moirai_branch_exists?
