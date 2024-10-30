@@ -33,7 +33,10 @@ jobs:
         run: bundle install --jobs 4 --retry 3
       
       - name: Run tests
-        run: bin/check
+        run: bundle exec rails test
+
+      - name: Run system tests
+        run: bundle exec rails test:system
   
   
   lint:
