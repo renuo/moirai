@@ -5,7 +5,8 @@ env:
   RAILS_ENV: test
   PGHOST: localhost
   PGUSER: postgres
-
+  MOIRAI_GITHUB_REPO_NAME: ${{ secrets.MOIRAI_GITHUB_REPO_NAME }}
+  MOIRAI_GITHUB_ACCESS_TOKEN: ${{ secrets.MOIRAI_GITHUB_ACCESS_TOKEN }}
 jobs:
   tests:
     name: Test

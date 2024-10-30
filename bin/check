@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+set -e
+
 bundle exec rails test
 bundle exec rails test:system

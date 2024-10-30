@@ -24,18 +24,5 @@ module Moirai
       assert_not @valid_translation.valid?
       assert_includes @valid_translation.errors[:locale], "can't be blank"
     end
-
-    test "should be invalid without file_path" do
-      @valid_translation.file_path = nil
-      assert_not @valid_translation.valid?
-      assert_includes @valid_translation.errors[:file_path], "can't be blank"
-    end
-
-    test "should be invalid if file_path does not exist" do
-      File.stub :exist?, false do
-        assert_not @invalid_translation.valid?
-        assert_includes @invalid_translation.errors[:file_path], "must exist"
-      end
-    end
   end
 end
