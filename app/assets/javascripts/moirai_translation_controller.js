@@ -6,7 +6,7 @@ export default class MoiraiTranslationController extends Controller {
   }
 
   submit(event) {
-    const {filePath, key} = event.target.dataset
+    const {key} = event.target.dataset
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content
 
@@ -19,8 +19,7 @@ export default class MoiraiTranslationController extends Controller {
       },
       body: JSON.stringify({
         translation: {
-          key: key,
-          file_path: filePath,
+          key,
           value: event.target.innerText
         }
       })

@@ -15,12 +15,11 @@ module Moirai
 
     def show
       @translation_keys = @file_handler.parse_file(@decoded_path)
+      @locale = @file_handler.get_first_key(@decoded_path)
     end
 
     def create_or_update
-      if (translation = Translation.find_by(file_path: translation_params[:file_path],
-        key: translation_params[:key],
-        locale: @file_handler.get_first_key(translation_params[:file_path])))
+      if (translation = Translation.find_by(key: translation_params[:key], locale: translation_params[:locale]))
         handle_update(translation)
       else
         handle_create
@@ -37,11 +36,11 @@ module Moirai
     private
 
     def handle_update(translation)
-      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
+      translation_from_file = @file_handler.parse_file(translation.find_file_path)
       if translation_from_file[translation.key] == translation_params[:value] || translation_params[:value].blank?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
-        redirect_to_translation_file(translation.file_path)
+        redirect_to_translation_file(translation.find_file_path)
         return
       end
 
@@ -55,15 +54,16 @@ module Moirai
     end
 
     def handle_create
-      translation_from_file = @file_handler.parse_file(translation_params[:file_path])
+      file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
+      translation_from_file = @file_handler.parse_file(file_path)
       if translation_from_file[translation_params[:key]] == translation_params[:value]
         flash.alert = "Translation #{translation_params[:key]} already exists."
-        redirect_to_translation_file(translation_params[:file_path])
+        redirect_to_translation_file(file_path)
         return
       end
 
       translation = Translation.new(translation_params)
-      translation.locale = @file_handler.get_first_key(translation_params[:file_path])
+      translation.locale = @file_handler.get_first_key(file_path)
       if translation.save
         flash.notice = "Translation #{translation.key} was successfully created."
       else
@@ -79,7 +79,7 @@ module Moirai
           render json: {}
         end
         format.all do
-          redirect_to_translation_file(translation.file_path)
+          redirect_to_translation_file(translation.find_file_path)
         end
       end
     end
