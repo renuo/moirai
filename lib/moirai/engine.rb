@@ -31,7 +31,7 @@ module Moirai
               if file_path.present?
                 render(partial: "moirai/translation_files/form",
                   locals: {key: scope_key_by_partial(key),
-                           file_path: file_path,
+                           locale: I18n.locale,
                            value: value})
               else
                 value
