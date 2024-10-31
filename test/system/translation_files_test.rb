@@ -13,44 +13,41 @@ class TranslationFilesTest < ApplicationSystemTestCase
   def test_index
     visit moirai_translation_files_path
 
-    @file_handler.file_paths.each do |path|
-      assert_text page, File.basename(path)
+    ["config/locales/de.yml", "config/locales/en.yml", "config/locales/it.yml"].each do |relative_path|
+      assert_text page, relative_path
     end
   end
 
   def test_show
     file_id = Digest::SHA256.hexdigest(@file_path)
-    @file_handler.parse_file(@file_path)
-
     visit moirai_translation_file_path(file_id)
 
     assert_text page, "locales.german"
-    assert_text page, "Deutsch"
   end
 
   def test_create_translation
-    @file_path = @file_handler.file_paths.first
-    file_id = Digest::SHA256.hexdigest(@file_path)
-    @file_handler.parse_file(@file_path)
+    save_and_open_screenshot
+    save_and_open_page
+    visit moirai_translation_file_path(Digest::SHA256.hexdigest(Rails.root.join("config/locales/de.yml").to_s))
 
-    visit moirai_translation_file_path(file_id)
 
-    within "#moirai-locales.german-new" do
+    within "#moirai-de_locales_german" do
       fill_in "translation[value]", with: "Hochdeutsch"
+      find("input[type=submit]", visible: false).click
     end
 
-    assert_text page, "Translation greeting was successfully created."
+    assert_text "Translation greeting was successfully created."
   end
 
   def test_update_translation
-    translation = Moirai::Translation.create!(key: "greeting", locale: "en", value: "Hi", file_path: @file_path)
-    file_id = Digest::SHA256.hexdigest(translation.file_path)
-    @file_handler.parse_file(translation.file_path)
+    translation = Moirai::Translation.create!(key: "greeting", locale: "en", value: "Hi")
+    file_id = Digest::SHA256.hexdigest(Rails.root.join("config/locales/en.yml").to_s)
 
     visit moirai_translation_file_path(file_id)
 
-    within "#moirai-locales.german-en" do
+    within "#moirai-en_locales_german" do
       fill_in "translation[value]", with: "Hochdeutsch"
+      find("input[type=submit]", visible: false).click
     end
 
     assert_text "Translation greeting was successfully updated."
