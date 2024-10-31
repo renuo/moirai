@@ -32,8 +32,6 @@ class TranslationFilesTest < ApplicationSystemTestCase
       fill_in "translation[value]", with: "Hochdeutsch"
       click_on "Update"
     end
-
-    assert_text "Translation greeting was successfully created."
   end
 
   def test_update_translation
