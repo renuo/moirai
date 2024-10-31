@@ -17,8 +17,7 @@ module Moirai
     end
 
     test "it returns  a list of files and their new content" do
-      Moirai::Translation.create!(file_path: @de_file_path,
-        locale: "de",
+      Moirai::Translation.create!(locale: "de",
         key: "locales.italian",
         value: "Italianese")
 
@@ -30,12 +29,10 @@ module Moirai
     end
 
     test "it merges two changes on the same file" do
-      Moirai::Translation.create!(file_path: @de_file_path,
-        locale: "de",
+      Moirai::Translation.create!(locale: "de",
         key: "locales.italian",
         value: "Italianese")
-      Moirai::Translation.create!(file_path: @de_file_path,
-        locale: "de",
+      Moirai::Translation.create!(locale: "de",
         key: "locales.german",
         value: "Germanese")
 
@@ -48,12 +45,10 @@ module Moirai
     end
 
     test "it returns two changes for separate files" do
-      Moirai::Translation.create!(file_path: @de_file_path,
-        locale: "de",
+      Moirai::Translation.create!(locale: "de",
         key: "locales.italian",
         value: "Italianese")
-      Moirai::Translation.create!(file_path: @it_file_path,
-        locale: "it",
+      Moirai::Translation.create!(locale: "it",
         key: "locales.german",
         value: "Germanese")
 
