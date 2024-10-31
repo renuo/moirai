@@ -33,7 +33,7 @@ class TranslationFilesTest < ApplicationSystemTestCase
 
     within "#moirai-de_locales_german" do
       fill_in "translation[value]", with: "Hochdeutsch"
-      find("input[type=submit]", visible: false).click
+      click_on "Update"
     end
 
     assert_text "Translation greeting was successfully created."
@@ -47,7 +47,7 @@ class TranslationFilesTest < ApplicationSystemTestCase
 
     within "#moirai-en_locales_german" do
       fill_in "translation[value]", with: "Hochdeutsch"
-      find("input[type=submit]", visible: false).click
+      click_on "Update"
     end
 
     assert_text "Translation greeting was successfully updated."
