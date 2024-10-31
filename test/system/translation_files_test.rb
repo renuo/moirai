@@ -26,10 +26,7 @@ class TranslationFilesTest < ApplicationSystemTestCase
   end
 
   def test_create_translation
-    save_and_open_screenshot
-    save_and_open_page
     visit moirai_translation_file_path(Digest::SHA256.hexdigest(Rails.root.join("config/locales/de.yml").to_s))
-
 
     within "#moirai-de_locales_german" do
       fill_in "translation[value]", with: "Hochdeutsch"
@@ -40,7 +37,7 @@ class TranslationFilesTest < ApplicationSystemTestCase
   end
 
   def test_update_translation
-    translation = Moirai::Translation.create!(key: "greeting", locale: "en", value: "Hi")
+    Moirai::Translation.create!(key: "greeting", locale: "en", value: "Hi")
     file_id = Digest::SHA256.hexdigest(Rails.root.join("config/locales/en.yml").to_s)
 
     visit moirai_translation_file_path(file_id)
