@@ -59,7 +59,7 @@ class Moirai::PullRequestCreator
 
   def existing_open_pull_request
     @github_client.pull_requests(@github_repo_name).find do |pull_request|
-      (pull_request.head.ref.start_with?(BRANCH_PREFIX)) && (pull_request.state == "open")
+      pull_request.head.ref.start_with?(BRANCH_PREFIX) && (pull_request.state == "open")
     end
   end
 

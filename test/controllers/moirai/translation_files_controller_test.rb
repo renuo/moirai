@@ -96,13 +96,13 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "creates a pull request with all the file changes" do
-    Moirai::Translation.create!(locale: "de",
-      key: "locales.italian",
+    Moirai::Translation.create!(key: "locales.italian",
+      locale: "de",
       value: "Italianese")
 
-    Moirai::Translation.create!(locale: "it",
-                                key: "locales.italian",
-                                value: "Italianese")
+    Moirai::Translation.create!(key: "locales.italian",
+      locale: "it",
+      value: "Italianese")
 
     post moirai.moirai_open_pr_path
 
@@ -114,14 +114,15 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
 
     assert pr
     file = @pull_request_creator.github_client.contents(@pull_request_creator.github_repo_name,
-                                                        path: './config/locales/it.yml',
-                                                        ref: @pull_request_creator.branch_name)
+      path: "./config/locales/it.yml",
+      ref: @pull_request_creator.branch_name)
     pr_file_content = Base64.decode64(file.content)
     proposed_translations = YAML.load(pr_file_content, symbolize_names: true)
     assert "Italianese", proposed_translations.dig(:it, :locales, :italian)
 
     @pull_request_creator.cleanup
     refute @pull_request_creator.existing_open_pull_request
+  end
 
   private
 
