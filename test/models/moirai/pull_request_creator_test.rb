@@ -25,12 +25,8 @@ module Moirai
     end
 
     test "it creates a new pull request with the required changes" do
-      changes = [
-        {
-          file_path: "./README.md",
-          content: "New content for README.md"
-        }
-      ]
+      changes = [Change.new("README.md", "New content for README.md"),
+        Change.new("config/locales/moirai.de.yml", "New file added")]
 
       @pull_request_creator.create_pull_request(changes)
 
