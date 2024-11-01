@@ -41,7 +41,7 @@ module Moirai
       pr = @pull_request_creator.existing_open_pull_request
       assert pr
 
-      @pull_request_creator.github_client.update_pull_request(@pull_request_creator.github_repo_name, pr.number, state: "closed")
+      @pull_request_creator.cleanup
 
       refute @pull_request_creator.existing_open_pull_request
     end

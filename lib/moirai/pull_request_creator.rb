@@ -3,6 +3,8 @@ class Moirai::PullRequestCreator
     !!defined?(Octokit)
   end
 
+  BRANCH_PREFIX = "moirai-translations-"
+
   attr_reader :github_repo_name, :github_access_token, :github_client, :github_repository, :branch_name
 
   def initialize
@@ -13,7 +15,7 @@ class Moirai::PullRequestCreator
   end
 
   def create_pull_request(translations_array)
-    @branch_name = "moirai-translations-#{Time.current.strftime("%F-%H-%M-%S")}-#{rand(1000..9999)}"
+    @branch_name = "#{BRANCH_PREFIX}#{Time.current.strftime("%F-%H-%M-%S")}-#{rand(1000..9999)}"
     default_branch = github_repository.default_branch
 
     if moirai_branch_exists?
@@ -27,7 +29,7 @@ class Moirai::PullRequestCreator
     end
 
     translations_array.each do |translation_hash|
-      converted_file_path = if translation_hash[:file_path].start_with?("./")
+      converted_file_path = if translation_hash[:file_path].to_s.start_with?("./")
         translation_hash[:file_path]
       else
         "./#{translation_hash[:file_path]}"
@@ -57,8 +59,14 @@ class Moirai::PullRequestCreator
 
   def existing_open_pull_request
     @github_client.pull_requests(@github_repo_name).find do |pull_request|
-      (pull_request.head.ref == branch_name) && (pull_request.state == "open")
+      pull_request.head.ref.start_with?(BRANCH_PREFIX) && (pull_request.state == "open")
     end
+  end
+
+  def cleanup
+    pr = existing_open_pull_request
+    @github_client.close_pull_request(@github_repo_name, pr.number)
+    @github_client.delete_branch(@github_repo_name, pr.head.ref)
   end
 
   private

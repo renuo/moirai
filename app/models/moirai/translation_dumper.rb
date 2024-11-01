@@ -27,7 +27,7 @@ module Moirai
         absolute_file_path = File.expand_path(file_path, Rails.root)
 
         # skip file paths that don't belong to the project
-        next unless absolute_file_path.start_with?(Rails.root.to_s)
+        next unless absolute_file_path.to_s.start_with?(Rails.root.to_s)
 
         translations_grouped_by_file_path[absolute_file_path] ||= []
         translations_grouped_by_file_path[absolute_file_path] << translation
