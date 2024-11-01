@@ -14,7 +14,8 @@ class Moirai::PullRequestCreator
     @github_repository = github_client.repo(github_repo_name)
   end
 
-  def create_pull_request(translations_array)
+  # @param changes Array[Moirai::Change]
+  def create_pull_request(changes)
     @branch_name = "#{BRANCH_PREFIX}#{Time.current.strftime("%F-%H-%M-%S")}-#{rand(1000..9999)}"
     default_branch = github_repository.default_branch
 
@@ -28,13 +29,8 @@ class Moirai::PullRequestCreator
       @github_client.create_ref(@github_repo_name, "heads/#{branch_name}", latest_commit_sha)
     end
 
-    translations_array.each do |translation_hash|
-      converted_file_path = if translation_hash[:file_path].to_s.start_with?("./")
-        translation_hash[:file_path]
-      else
-        "./#{translation_hash[:file_path]}"
-      end
-      update_file(converted_file_path, translation_hash[:content])
+    changes.each do |change|
+      update_file(change.file_path, change.content)
     end
 
     unless existing_open_pull_request.present?

@@ -4,16 +4,13 @@ module Moirai
       @key_finder = KeyFinder.new
     end
 
-    # @return Array[Hash]
+    # @return Array[Moirai::Change]
     def call
       translations_by_file_path = group_translations_by_file_path
       changes = []
       translations_by_file_path.each do |file_path, translations|
         relative_file_path = Pathname.new(file_path).relative_path_from(Rails.root)
-        changes << {
-          file_path: relative_file_path,
-          content: get_updated_file_contents(file_path, translations)
-        }
+        changes << Change.new(relative_file_path, get_updated_file_contents(file_path, translations))
       end
       changes
     end
