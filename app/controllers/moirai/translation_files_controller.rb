@@ -28,7 +28,7 @@ module Moirai
     end
 
     def open_pr
-      flash.notice = "I created an amazing PR"
+      flash.notice = "I created an amazing Pull Request"
       changes = Moirai::TranslationDumper.new.call
       Moirai::PullRequestCreator.new.create_pull_request(changes)
       redirect_back_or_to(root_path)
@@ -37,7 +37,7 @@ module Moirai
     private
 
     def handle_update(translation)
-      if translation_params[:value].blank? || translation_same_as_in_file?
+      if translation_params[:value].blank? || translation_same_as_current?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
         redirect_to_translation_file(translation.file_path)
@@ -54,27 +54,20 @@ module Moirai
     end
 
     def handle_create
-      file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
-      if translation_same_as_in_file?
+      if translation_same_as_current?
         flash.alert = "Translation #{translation_params[:key]} already exists."
-        redirect_to_translation_file(file_path)
+        redirect_back_or_to moirai_translation_files_path, status: :unprocessable_entity
         return
       end
 
       translation = Translation.new(translation_params)
-      translation.locale = @file_handler.get_first_key(file_path) if file_path.present?
 
       if translation.save
         flash.notice = "Translation #{translation.key} was successfully created."
         success_response(translation)
       else
         flash.alert = translation.errors.full_messages.join(", ")
-        if file_path.present?
-          flash.alert = "Translation #{translation.key} already exists."
-          redirect_back_or_to moirai_translation_file_path(Digest::SHA256.hexdigest(file_path))
-        else
-          redirect_back_or_to moirai_translation_files_path, status: :unprocessable_entity
-        end
+        redirect_back_or_to moirai_translation_files_path, status: :unprocessable_entity
       end
     end
 
@@ -109,13 +102,17 @@ module Moirai
       @file_handler = Moirai::TranslationFileHandler.new
     end
 
-    def translation_same_as_in_file?
-      file_path = KeyFinder.new.file_path_for(translation_params[:key], locale: translation_params[:locale])
+    # TODO: to resolve the last point of the TODOs we could look at the current translation (without moirai)
+    # I quickly tried but I need to use the original backend instead of the moirai one
+    # The problem is that if we set a value that is the same as currently being used via fallback,
+    # it will create an entry in the database, and afterwards will try to add it in the PR, which we don't want.
+    def translation_same_as_current?
+      file_paths = KeyFinder.new.file_paths_for(translation_params[:key], locale: translation_params[:locale])
 
-      return false if file_path.blank?
-      return false unless File.exist?(file_path)
+      return false if file_paths.empty?
+      return false unless file_paths.all? { |file_path| File.exist?(file_path) }
 
-      translation_params[:value] == @file_handler.parse_file(file_path)[translation_params[:key]]
+      translation_params[:value] == @file_handler.parse_file(file_paths.first)[translation_params[:key]]
     end
   end
 end

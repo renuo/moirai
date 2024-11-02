@@ -12,16 +12,22 @@ module Moirai
     end
 
     # TODO: remove locale default
-    def file_path_for(key, locale: I18n.locale)
+    # Returns all the file_paths where the key is found, including gems.
+    def file_paths_for(key, locale: I18n.locale)
+      return [] if key.blank?
+
       locale ||= I18n.locale
-      moirai_translations[locale.to_sym][key]
+      moirai_translations[locale.to_sym].select do |_filename, data|
+        data.dig(*key.split(".")).present?
+      end.map { |k, _| k }.sort { |file_path| file_path.start_with?(Rails.root.to_s) ? 0 : 1 }
     end
 
     def store_moirai_translations(filename, locale, data, options)
       moirai_translations[locale] ||= Concurrent::Hash.new
-      flatten_data = flatten_hash(filename, data)
-      flatten_data = I18n::Utils.deep_symbolize_keys(flatten_data) unless options.fetch(:skip_symbolize_keys, false)
-      I18n::Utils.deep_merge!(moirai_translations[locale], flatten_data)
+
+      locale = locale.to_sym
+      moirai_translations[locale] ||= Concurrent::Hash.new
+      moirai_translations[locale][filename] = data.with_indifferent_access
     end
 
     def moirai_translations(do_init: false)
@@ -44,28 +50,6 @@ module Moirai
       end
 
       data
-    end
-
-    def flatten_hash(filename, hash, parent_key = "", result = {})
-      hash.each do |key, value|
-        new_key = parent_key.empty? ? key.to_s : "#{parent_key}.#{key}"
-        case value
-        when Hash
-          flatten_hash(filename, value, new_key, result)
-        when Array
-          value.each_with_index do |item, index|
-            array_key = "#{new_key}.#{index}"
-            if item.is_a?(Hash)
-              flatten_hash(filename, item, array_key, result)
-            else
-              result[array_key] = filename
-            end
-          end
-        else
-          result[new_key] = filename
-        end
-      end
-      result
     end
   end
 end

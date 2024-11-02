@@ -23,7 +23,7 @@ export default class MoiraiTranslationController extends Controller {
       body: JSON.stringify({
         translation: {
           key: this.keyValue,
-          locale: this.localeValue
+          locale: this.localeValue,
           value: event.target.innerText
         }
       })

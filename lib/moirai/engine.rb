@@ -9,9 +9,7 @@ module Moirai
     end
 
     config.after_initialize do
-      moirai_backend = I18n::Backend::Moirai.new
-      moirai_backend.eager_load!
-      I18n.backend = I18n::Backend::Chain.new(moirai_backend, I18n.backend)
+      I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
     end
 
     # TODO: how to do this without rewriting the entire method?
@@ -26,16 +24,11 @@ module Moirai
 
             if moirai_edit_enabled?
               @key_finder ||= Moirai::KeyFinder.new
-              file_path = @key_finder.file_path_for(scope_key_by_partial(key), locale: I18n.locale)
 
-              if file_path.present?
-                render(partial: "moirai/translation_files/form",
-                  locals: {key: scope_key_by_partial(key),
-                           locale: I18n.locale,
-                           value: value})
-              else
-                value
-              end
+              render(partial: "moirai/translation_files/form",
+                locals: {key: scope_key_by_partial(key),
+                         locale: I18n.locale,
+                         value: value})
             else
               value
             end
