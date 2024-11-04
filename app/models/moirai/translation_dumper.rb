@@ -15,12 +15,25 @@ module Moirai
       changes
     end
 
+    def best_file_path_for(key, locale)
+      file_paths = @key_finder.file_paths_for(key, locale: locale)
+      file_paths.filter! { |p| p.start_with?(Rails.root.to_s) }
+      if file_paths.any?
+        file_paths.first
+      elsif key.split(".").size > 1
+        parent_key = key.split(".")[0..-2].join(".")
+        best_file_path_for(parent_key, locale)
+      else
+        "./config/locales/#{locale}.yml"
+      end
+    end
+
     private
 
     def group_translations_by_file_path
       translations_grouped_by_file_path = {}
       Moirai::Translation.order(created_at: :asc).each do |translation|
-        file_path = @key_finder.file_path_for(translation.key, locale: translation.locale)
+        file_path = best_file_path_for(translation.key, translation.locale)
         absolute_file_path = File.expand_path(file_path, Rails.root)
 
         # skip file paths that don't belong to the project

@@ -1,0 +1,7 @@
+<% @translations.each do |locale, key, value| %>
+  <div class="card">
+    <p><strong>Locale:</strong> <%=locale %></p>
+    <p><strong>Key:</strong> <%=key %></p>
+    <p><strong>Value:</strong> <%= value %></p>
+  </div>
+<% end %>

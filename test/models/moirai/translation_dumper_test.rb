@@ -6,9 +6,9 @@ module Moirai
   class TranslationDumperTest < ActiveSupport::TestCase
     setup do
       @translation_dumper = TranslationDumper.new
-      @de_relative_file_path = Pathname.new("./config/locales/de.yml")
+      @de_relative_file_path = Pathname.new("./config/locales/de.yml").to_s
       @de_file_path = Rails.root.join(@de_relative_file_path).to_s
-      @it_relative_file_path = Pathname.new("./config/locales/it.yml")
+      @it_relative_file_path = Pathname.new("./config/locales/it.yml").to_s
       @it_file_path = Rails.root.join(@it_relative_file_path).to_s
     end
 
@@ -23,8 +23,8 @@ module Moirai
 
       changes = @translation_dumper.call
       assert_equal 1, changes.length
-      assert_equal @de_relative_file_path.to_s, changes[0].file_path
-      content = YAML.load(changes[0].content, symbolize_names: true)
+      assert_equal @de_relative_file_path, changes[0].file_path
+      content = YAML.safe_load(changes[0].content, symbolize_names: true)
       assert_equal "Italianese", content.dig(:de, :locales, :italian)
     end
 
@@ -34,8 +34,8 @@ module Moirai
 
       changes = @translation_dumper.call
       assert_equal 1, changes.length
-      assert_equal @de_relative_file_path.to_s, changes[0].file_path
-      content = YAML.load(changes[0].content, symbolize_names: true)
+      assert_equal @de_relative_file_path, changes[0].file_path
+      content = YAML.safe_load(changes[0].content, symbolize_names: true)
       assert_equal "Italianese", content.dig(:de, :locales, :italian)
       assert_equal "Germanese", content.dig(:de, :locales, :german)
     end
@@ -46,12 +46,12 @@ module Moirai
 
       changes = @translation_dumper.call
       assert_equal 2, changes.length
-      assert_equal @de_relative_file_path.to_s, changes[0].file_path
-      de_content = YAML.load(changes[0].content, symbolize_names: true)
+      assert_equal @de_relative_file_path, changes[0].file_path
+      de_content = YAML.safe_load(changes[0].content, symbolize_names: true)
       assert_equal "Italianese", de_content.dig(:de, :locales, :italian)
 
-      assert_equal @it_relative_file_path.to_s, changes[1].file_path
-      it_content = YAML.load(changes[1].content, symbolize_names: true)
+      assert_equal @it_relative_file_path, changes[1].file_path
+      it_content = YAML.safe_load(changes[1].content, symbolize_names: true)
       assert_equal "Germanese", it_content.dig(:it, :locales, :german)
     end
 
@@ -66,9 +66,39 @@ module Moirai
 
       changes = @translation_dumper.call
       assert_equal 1, changes.length
-      assert_equal @de_relative_file_path.to_s, changes[0].file_path
-      content = YAML.load(changes[0].content, symbolize_names: true)
+      assert_equal @de_relative_file_path, changes[0].file_path
+      content = YAML.safe_load(changes[0].content, symbolize_names: true)
       assert_equal "Italianese Recent", content.dig(:de, :locales, :italian)
+    end
+
+    test "it adds new keys to the LOCALE.yml file by default" do
+      Moirai::Translation.create!(locale: "de", key: "this.is.new", value: "Very new")
+      changes = @translation_dumper.call
+      assert_equal 1, changes.length
+      assert_equal @de_relative_file_path, changes[0].file_path
+    end
+
+    test "it adds new keys to the file owning their parent key" do
+      Moirai::Translation.create!(locale: "de", key: "locales.french", value: "Franzosisch")
+      Moirai::Translation.create!(locale: "de", key: "enumerations.countries.it", value: "Italien")
+      changes = @translation_dumper.call
+      assert_equal 2, changes.length
+      assert_equal @de_relative_file_path, changes[0].file_path
+      assert_equal "./config/locales/another.de.yml", changes[1].file_path
+    end
+
+    test "it adds keys belonging to gems to LOCALE.yml file by default" do
+      Moirai::Translation.create!(locale: "en", key: "time.formats.default", value: "%d.%m.%Y")
+      changes = @translation_dumper.call
+      assert_equal 1, changes.length
+      assert_equal "./config/locales/en.yml", changes[0].file_path
+    end
+
+    test "it finds the most appropriate path" do
+      assert_match(%r{config/locales/de.yml}, @translation_dumper.best_file_path_for("date.formats.default", :de))
+      assert_match(%r{config/locales/rails.en.yml}, @translation_dumper.best_file_path_for("date.formats.default", :en))
+      assert_match(%r{config/locales/rails.en.yml}, @translation_dumper.best_file_path_for("date.formats.short", :en))
+      assert_match(%r{config/locales/rails.en.yml}, @translation_dumper.best_file_path_for("date.order", :en))
     end
   end
 end

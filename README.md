@@ -188,8 +188,7 @@ See the image below as an example:
 * Support for interpolation
 * Support for count variants
 * Better inline editing tool
-* Performance of translations lookup
-* Support for translations and strings coming from other gems
+* Support for fallbacks: it should detect when a fallback string is in use and prevent attempts to override its value.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

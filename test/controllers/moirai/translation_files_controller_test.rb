@@ -48,8 +48,7 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
 
     post translation_files_url, params: {translation: {key: "locales.german", locale: "en", value: "German"}}
 
-    assert_response :redirect
-    assert_redirected_to translation_file_url("config/locales/en.yml")
+    assert_response :unprocessable_entity
     assert_equal "Translation locales.german already exists.", flash[:alert]
     assert_equal translation_count_before, Moirai::Translation.count
   end

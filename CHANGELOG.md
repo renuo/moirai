@@ -1,3 +1,8 @@
+## Unreleased
+
+* Support for strings coming from gems ([@coorasse][])
+* Support for new strings (not yet translated) ([@coorasse][])
+
 ## 0.1.1
 
 * Review Stimulus controller ([@coorasse][])
