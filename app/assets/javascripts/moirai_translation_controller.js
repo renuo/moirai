@@ -6,7 +6,7 @@ export default class MoiraiTranslationController extends Controller {
     locale: String
   }
 
-  static targets = ["codeWrapper", "nonCodeWrapper"]
+  static targets = ["codeWrapper", "textWrapper"]
 
   connect() {
     this.active = false
@@ -46,12 +46,12 @@ export default class MoiraiTranslationController extends Controller {
 
   #activateCodeWrapper() {
     this.active = true
-    swapElements(this.nonCodeWrapperTarget, this.codeWrapperTarget)
+    swapElements(this.textWrapperTarget, this.codeWrapperTarget)
   }
 
   #deactivateCodeWrapper() {
     this.active = false
-    swapElements(this.codeWrapperTarget, this.nonCodeWrapperTarget)
+    swapElements(this.codeWrapperTarget, this.textWrapperTarget)
   }
 
   #swapElements(source, destination) {
