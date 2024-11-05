@@ -1,6 +1,6 @@
 require "test_helper"
 
-class TranslationFilesControllerJsonTest < ActionDispatch::IntegrationTest
+class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @translation = Moirai::Translation.create(key: "locales.german", locale: "de", value: "Neudeutsch")
   end
