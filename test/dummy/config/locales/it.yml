@@ -5,6 +5,7 @@ it:
     english: Inglese
   first_paragraph: Questa è l'applicazione moirai dummy per i test. Cambi la lingua dalla barra di navigazione.
   second_paragraph: La lingua di riserva è l'inglese. I seguenti pulsanti sono stati definiti solo in una lingua
+  third_paragraph: Contiene <b>testo in grassetto</b>, <i>testo in corsivo</i> e un <a href="https://www.google.com">link</a>
   buttons:
     very:
       much:

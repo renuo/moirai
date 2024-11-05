@@ -5,6 +5,7 @@ en:
     english: English
   first_paragraph: This is moirai dummy app for testing. Switch language from the navbar.
   second_paragraph: Fallback language is English. The following buttons have been defined only in one language
+  third_paragraph: Contains <b>bold text</b>, <i>italic text</i> and a <a href="https://www.google.com">link</a>
   buttons:
     very:
       much:
