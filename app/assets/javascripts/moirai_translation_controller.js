@@ -37,20 +37,29 @@ export default class MoiraiTranslationController extends Controller {
   }
 
   hover(event) {
-    this.active = true
+    this.#activateCodeWrapper()
+  }
+  
+  blur(event) {
+    this.#deactivateCodeWrapper()
   }
 
   #activateCodeWrapper() {
-    this.codeWrapperTarget.style.display = 'block'
-    this.nonCodeWrapperTarget.style.display = 'none'
-    this.codeWrapperTarget.focus()
-    this.codeWrapperTarget.innerHTML = this.codeWrapperTarget.innerHTML
+    this.active = true
+    swapElements(this.nonCodeWrapperTarget, this.codeWrapperTarget)
   }
 
   #deactivateCodeWrapper() {
-    this.codeWrapperTarget.style.display = 'none'
-    this.nonCodeWrapperTarget.style.display = 'block'
-    this.nonCodeWrapperTarget.focus()
-    this.nonCodeWrapperTarget.innerHTML = this.nonCodeWrapperTarget.innerHTML
+    this.active = false
+    swapElements(this.codeWrapperTarget, this.nonCodeWrapperTarget)
+  }
+
+  #swapElements(source, destination) {
+    source.style.display = 'none'
+    destination.style.display = 'block'
+
+    destination.focus()
+    destination.innerHTML = source.innerHTML
+    source.innerHTML = ''
   }
 }
