@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 0.2.0
+
 * Support for strings coming from gems ([@coorasse][])
 * Support for new strings (not yet translated) ([@coorasse][])
 

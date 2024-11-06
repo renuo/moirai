@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = "moirai"
-  spec.version = "0.1.0"
+  spec.version = "0.2.0"
   spec.authors = ["Alessandro Rodi", "Oliver Anthony", "Daniel Bengl"]
   spec.email = %w[alessandro.rodi@renuo.ch oliver.anthony@renuo.ch daniel.bengl@renuo.ch]
 
