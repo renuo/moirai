@@ -9,7 +9,18 @@ module Moirai
     end
 
     config.after_initialize do
-      I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
+      if ActiveRecord::Base.connection.data_source_exists?('moirai_translations')
+        I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
+      else
+        Rails.logger.warn("moirai disabled: tables have not been generated yet.")
+      end
+    end
+
+    initializer 'moirai precompile hook', group: :all do |app|
+      case RailsAdmin.config.asset_source
+      when :sprockets
+        app.config.assets.precompile += %w[moirai/application.css]
+      end
     end
 
     # TODO: how to do this without rewriting the entire method?
@@ -26,9 +37,9 @@ module Moirai
               @key_finder ||= Moirai::KeyFinder.new
 
               render(partial: "moirai/translation_files/form",
-                locals: {key: scope_key_by_partial(key),
-                         locale: I18n.locale,
-                         value: value})
+                     locals: { key: scope_key_by_partial(key),
+                               locale: I18n.locale,
+                               value: value })
             else
               value
             end
