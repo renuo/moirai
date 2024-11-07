@@ -5,5 +5,5 @@
   data-moirai-translation-key-value="<%= key %>"
   data-moirai-translation-locale-value="<%= locale %>"
   data-controller="moirai-translation">
-  <%= value %>
+  <%= value.to_s.gsub("<", "&lt;").gsub(">", "&gt;").html_safe %>
 </span>
