@@ -6,12 +6,6 @@ export default class MoiraiTranslationController extends Controller {
     locale: String
   }
 
-  static targets = ["codeWrapper", "textWrapper"]
-
-  connect() {
-    this.active = false
-  }
-
   click(event) {
     event.preventDefault()
   }
@@ -30,36 +24,9 @@ export default class MoiraiTranslationController extends Controller {
         translation: {
           key: this.keyValue,
           locale: this.localeValue,
-          value: event.target.innerHTML
+          value: event.target.innerText
         }
       })
     });
-  }
-
-  hover(event) {
-    this.#activateCodeWrapper()
-  }
-
-  blur(event) {
-    this.#deactivateCodeWrapper()
-  }
-
-  #activateCodeWrapper() {
-    this.active = true
-    this.#swapElements(this.textWrapperTarget, this.codeWrapperTarget)
-  }
-
-  #deactivateCodeWrapper() {
-    this.active = false
-    this.#swapElements(this.codeWrapperTarget, this.textWrapperTarget)
-  }
-
-  #swapElements(source, destination) {
-    source.style.display = 'none'
-    destination.style.display = 'block'
-
-    destination.focus()
-    destination.innerHTML = source.innerHTML
-    source.innerHTML = ''
   }
 }
