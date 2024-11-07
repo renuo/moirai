@@ -39,19 +39,19 @@ export default class MoiraiTranslationController extends Controller {
   hover(event) {
     this.#activateCodeWrapper()
   }
-  
+
   blur(event) {
     this.#deactivateCodeWrapper()
   }
 
   #activateCodeWrapper() {
     this.active = true
-    swapElements(this.textWrapperTarget, this.codeWrapperTarget)
+    this.#swapElements(this.textWrapperTarget, this.codeWrapperTarget)
   }
 
   #deactivateCodeWrapper() {
     this.active = false
-    swapElements(this.codeWrapperTarget, this.textWrapperTarget)
+    this.#swapElements(this.codeWrapperTarget, this.textWrapperTarget)
   }
 
   #swapElements(source, destination) {
