@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Moirai
   class Engine < ::Rails::Engine
     isolate_namespace Moirai
@@ -12,8 +10,6 @@ module Moirai
       I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
     end
 
-    # TODO: how to do this without rewriting the entire method?
-    # https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/translation_helper.rb#L122
     initializer "moirai.override_translation_helper" do
       ActiveSupport.on_load(:action_view) do
         module ActionView::Helpers::TranslationHelper # rubocop:disable Lint/ConstantDefinitionInBlock
@@ -21,6 +17,10 @@ module Moirai
 
           def translate(key, **options)
             value = original_translate(key, **options)
+
+            if value.is_a?(String) && value.include?('class="translation_missing"')
+              value = extract_inner_content(value)
+            end
 
             if moirai_edit_enabled?
               @key_finder ||= Moirai::KeyFinder.new
@@ -38,6 +38,12 @@ module Moirai
 
           def moirai_edit_enabled?
             params[:moirai] == "true"
+          end
+
+          private
+
+          def extract_inner_content(html)
+            html.match(/<span[^>]*>(.*?)<\/span>/)[1]
           end
         end
       end
