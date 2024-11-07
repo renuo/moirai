@@ -24,9 +24,9 @@ module Moirai
               @key_finder ||= Moirai::KeyFinder.new
 
               form_html = render(partial: "moirai/translation_files/form",
-                                 locals: { key: scope_key_by_partial(key),
-                                           locale: I18n.locale,
-                                           value: value })
+                locals: {key: scope_key_by_partial(key),
+                         locale: I18n.locale,
+                         value: value})
 
               SafeBufferWrapper.new(form_html)
             else
