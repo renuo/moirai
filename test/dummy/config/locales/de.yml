@@ -5,7 +5,7 @@ de:
     english: Englisch
   first_paragraph: Dies ist eine Dummy-App von moirai zum Testen. Wechseln Sie die Sprache über die Navigationsleiste.
   second_paragraph: Fallback-Sprache ist Englisch. Die folgenden Schaltflächen wurden nur in einer Sprache definiert
-  third_paragraph: Enthält <b>fettgedruckten Text</b>, <i>kursiven Text</i> und einen <a href="https://www.google.com">Link</a>
+  third_paragraph_html_html: Enthält <b>fettgedruckten Text</b>, <i>kursiven Text</i> und einen <a href="https://www.google.com">Link</a>
   buttons:
     very:
       much:
