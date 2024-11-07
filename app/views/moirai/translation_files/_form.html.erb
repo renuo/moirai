@@ -1,11 +1,9 @@
 <span 
   contenteditable 
-  data-action="blur->moirai-translation#submit click->moirai-translation#click hover->moirai-translation#hover blur->moirai-translation#blur"
+  data-action="blur->moirai-translation#submit click->moirai-translation#click"
   style="border: 1px dashed #1d9f74; min-width: 30px; display: inline-block;" 
   data-moirai-translation-key-value="<%= key %>"
   data-moirai-translation-locale-value="<%= locale %>"
   data-controller="moirai-translation">
-
-  <code style="display: none;" data-moirai-translaton-target="htmlWrapper"></code>
-  <span  data-moirai-translation-target="textWrapper"><%= value.html_safe %></span>
+  <%= value %>
 </span>
