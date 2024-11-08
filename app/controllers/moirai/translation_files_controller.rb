@@ -74,6 +74,7 @@ module Moirai
     def success_response(translation)
       respond_to do |format|
         format.json do
+          flash.discard
           render json: {}
         end
         format.all do
