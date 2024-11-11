@@ -9,7 +9,7 @@ module Moirai
     end
 
     config.after_initialize do
-      if ActiveRecord::Base.connection.data_source_exists?('moirai_translations')
+      if ActiveRecord::Base.connection.data_source_exists?("moirai_translations")
         I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
       else
         Rails.logger.warn("moirai disabled: tables have not been generated yet.")
@@ -30,9 +30,9 @@ module Moirai
               @key_finder ||= Moirai::KeyFinder.new
 
               render(partial: "moirai/translation_files/form",
-                     locals: { key: scope_key_by_partial(key),
-                               locale: I18n.locale,
-                               value: value })
+                locals: {key: scope_key_by_partial(key),
+                         locale: I18n.locale,
+                         value: value})
             else
               value
             end

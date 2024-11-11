@@ -27,7 +27,7 @@ module Moirai
       private
 
       def using_js_bundling?
-        (Rails.root.join("app/javascript/controllers")).exist?
+        Rails.root.join("app/javascript/controllers").exist?
       end
 
       def mount_engine
