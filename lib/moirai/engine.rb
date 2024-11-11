@@ -16,13 +16,6 @@ module Moirai
       end
     end
 
-    initializer 'moirai precompile hook', group: :all do |app|
-      case RailsAdmin.config.asset_source
-      when :sprockets
-        app.config.assets.precompile += %w[moirai/application.css]
-      end
-    end
-
     # TODO: how to do this without rewriting the entire method?
     # https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/translation_helper.rb#L122
     initializer "moirai.override_translation_helper" do
