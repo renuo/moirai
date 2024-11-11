@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative "lib/moirai/version"
+
 Gem::Specification.new do |spec|
   spec.name = "moirai"
-  spec.version = "0.2.0"
+  spec.version = Moirai::VERSION
   spec.authors = ["Alessandro Rodi", "Oliver Anthony", "Daniel Bengl"]
   spec.email = %w[alessandro.rodi@renuo.ch oliver.anthony@renuo.ch daniel.bengl@renuo.ch]
 
