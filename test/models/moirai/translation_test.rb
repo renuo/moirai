@@ -4,6 +4,8 @@ module Moirai
   class TranslationTest < ActiveSupport::TestCase
     def setup
       @valid_translation = Translation.new(key: "hello", locale: "en", value: "Hello")
+      @translation_with_config = Translation.new(key: "locales.german", locale: "en", value: "German")
+      @out_of_sync_translation_with_config = Translation.new(key: "locales.german", locale: "en", value: "Italian")
     end
 
     test ".by_file_path" do
@@ -13,6 +15,16 @@ module Moirai
 
       assert_equal [translation1, translation2], Translation.by_file_path(Rails.root.join("config/locales/en.yml").to_s)
       assert_equal [translation3], Translation.by_file_path(Rails.root.join("config/locales/de.yml").to_s)
+    end
+
+    test ".file_value" do
+      assert_equal "German", @translation_with_config.file_value
+    end
+
+    test ".in_sync_with_file?" do
+      assert_equal true, @translation_with_config.in_sync_with_file?
+      assert_equal false, @valid_translation.in_sync_with_file?
+      assert_equal false, @out_of_sync_translation_with_config.in_sync_with_file?
     end
 
     test "should be valid with valid attributes" do

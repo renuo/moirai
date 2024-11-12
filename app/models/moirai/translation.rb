@@ -14,5 +14,18 @@ module Moirai
       key_finder = KeyFinder.new
       all.select { |translation| key_finder.file_paths_for(translation.key, locale: translation.locale).include?(file_path) }
     end
+
+    def in_sync_with_file?
+      file_translation = file_value
+      file_translation.present? && file_translation == value
+    end
+
+    def file_value
+      return nil unless file_path
+
+      file_handler = TranslationFileHandler.new
+      file_content = file_handler.parse_file(file_path)
+      file_content[key]
+    end
   end
 end
