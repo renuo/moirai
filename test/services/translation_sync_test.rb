@@ -17,7 +17,7 @@ module Moirai
       assert_equal "Italienisch", I18n.t("locales.italian", locale: :de)
 
       Moirai::Translation.create!(locale: "de", key: "locales.italian", value: "Italianese")
-      
+
       assert_equal 1, Moirai::Translation.count
 
       modified_de_yaml = {
