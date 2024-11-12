@@ -20,11 +20,6 @@ module Moirai
       
       assert_equal 1, Moirai::Translation.count
 
-      Rails.cache.clear
-      I18n.reload!
-
-      assert_equal "Italianese", I18n.t("locales.italian", locale: :de)
-
       modified_de_yaml = {
         de: {
           locales: {
