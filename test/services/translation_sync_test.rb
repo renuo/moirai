@@ -17,6 +17,11 @@ module Moirai
       assert_equal "Italienisch", I18n.t("locales.italian", locale: :de)
 
       Moirai::Translation.create!(locale: "de", key: "locales.italian", value: "Italianese")
+      
+      assert_equal 1, Moirai::Translation.count
+
+      Rails.cache.clear
+      I18n.reload!
 
       assert_equal "Italianese", I18n.t("locales.italian", locale: :de)
 
