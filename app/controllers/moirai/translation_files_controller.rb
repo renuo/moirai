@@ -40,7 +40,17 @@ module Moirai
       if translation_params[:value].blank? || translation_same_as_current?
         translation.destroy
         flash.notice = "Translation #{translation.key} was successfully deleted."
-        redirect_to_translation_file(translation.file_path)
+        respond_to do |format|
+          format.json do
+            flash.discard
+            render json: {
+              fallback_translation: get_fallback_translation
+            }
+          end
+          format.html do
+            redirect_to_translation_file(translation.file_path)
+          end
+        end
         return
       end
 
@@ -114,6 +124,15 @@ module Moirai
       return false unless file_paths.all? { |file_path| File.exist?(file_path) }
 
       translation_params[:value] == @file_handler.parse_file(file_paths.first)[translation_params[:key]]
+    end
+
+    def get_fallback_translation
+      file_paths = KeyFinder.new.file_paths_for(translation_params[:key], locale: translation_params[:locale])
+
+      return "" if file_paths.empty?
+      return "" unless file_paths.all? { |file_path| File.exist?(file_path) }
+
+      @file_handler.parse_file(file_paths.first)[translation_params[:key]]
     end
   end
 end

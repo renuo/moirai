@@ -74,6 +74,12 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
     assert_equal count_before - 1, Moirai::Translation.count
   end
 
+  test "update translation with blank value json" do
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: ""}}, as: :json
+    assert_response :ok
+    assert_equal "Deutsch", JSON.parse(response.body)["translation"]
+  end
+
   test "update translation with non-blank new value" do
     post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: "Hochdeutsch"}}
 

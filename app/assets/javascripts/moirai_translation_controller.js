@@ -30,8 +30,8 @@ export default class MoiraiTranslationController extends Controller {
     })
     .then(response => response.json())
     .then(data => {
-      if (data?.fallback_translation?.value) {
-        event.target.innerText = data.fallback_translation.value
+      if (data?.fallback_translation) {
+        event.target.innerText = data.fallback_translation
       }
     })
     .catch(error => {
