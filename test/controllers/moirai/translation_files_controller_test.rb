@@ -63,6 +63,12 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
     assert_equal translation_count_before, Moirai::Translation.count
   end
 
+  test "create translation empty json" do
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: ""}}, as: :json
+    assert_response :ok
+    assert_equal "Deutsch", JSON.parse(response.body)["fallback_translation"]
+  end
+
   # Update action tests
   test "update translation with blank value" do
     count_before = Moirai::Translation.count

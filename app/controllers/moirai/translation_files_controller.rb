@@ -70,6 +70,21 @@ module Moirai
         return
       end
 
+      if translation_params[:value].blank?
+        respond_to do |format|
+          format.json do
+            render json: {
+              fallback_translation: get_fallback_translation
+            }
+          end
+          format.html do
+            flash.alert = "Value can't be blank"
+            redirect_back_or_to moirai_translation_file_path(Digest::SHA256.hexdigest(translation_params[:key]))
+          end
+        end
+        return
+      end
+
       translation = Translation.new(translation_params)
 
       if translation.save
