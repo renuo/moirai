@@ -27,10 +27,10 @@ module Moirai
               @key_finder ||= Moirai::KeyFinder.new
 
               render(partial: "moirai/translation_files/form",
-                locals: {key: scope_key_by_partial(key),
-                         locale: I18n.locale,
-                         is_missing_translation: is_missing_translation,
-                         value: value})
+                     locals: {key: scope_key_by_partial(key),
+                              locale: I18n.locale,
+                              is_missing_translation: is_missing_translation,
+                              value: value})
             else
               value
             end
@@ -45,7 +45,8 @@ module Moirai
           private
 
           def extract_inner_content(html)
-            html.match(/<span[^>]*>(.*?)<\/span>/)[1]
+            match = html.match(/<[^>]+>([^<]*)<\/[^>]+>/)
+            match ? match[1] : nil
           end
         end
       end
