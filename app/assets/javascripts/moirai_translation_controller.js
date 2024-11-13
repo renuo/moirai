@@ -27,6 +27,15 @@ export default class MoiraiTranslationController extends Controller {
           value: event.target.innerText
         }
       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data?.fallback_translation?.value) {
+        event.target.innerText = data.fallback_translation.value
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
     });
   }
 }
