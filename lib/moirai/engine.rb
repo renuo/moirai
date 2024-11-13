@@ -12,6 +12,8 @@ module Moirai
       I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
     end
 
+    # TODO: how to do this without rewriting the entire method?
+    # https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/translation_helper.rb#L122
     initializer "moirai.override_translation_helper" do
       ActiveSupport.on_load(:action_view) do
         module ActionView::Helpers::TranslationHelper # rubocop:disable Lint/ConstantDefinitionInBlock
