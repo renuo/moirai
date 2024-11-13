@@ -18,8 +18,8 @@ module Moirai
           def translate(key, **options)
             value = original_translate(key, **options)
 
-            missing_translationf = value.include?('class="translation_missing"')
-            if value.is_a?(String) && missing_translationf
+            is_missing_translation = value.include?('class="translation_missing"')
+            if value.is_a?(String) && is_missing_translation
               value = extract_inner_content(value)
             end
 
@@ -29,7 +29,7 @@ module Moirai
               render(partial: "moirai/translation_files/form",
                 locals: {key: scope_key_by_partial(key),
                          locale: I18n.locale,
-                         missing_translationf: missing_translationf,
+                         is_missing_translation: is_missing_translation,
                          value: value})
             else
               value
