@@ -9,7 +9,11 @@ module Moirai
     end
 
     config.after_initialize do
-      I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
+      if ActiveRecord::Base.connection.data_source_exists?("moirai_translations")
+        I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
+      else
+        Rails.logger.warn("moirai disabled: tables have not been generated yet.")
+      end
     end
 
     # TODO: how to do this without rewriting the entire method?
