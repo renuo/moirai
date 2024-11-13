@@ -1,102 +1,96 @@
 require "test_helper"
 
-class TranslationFilesControllerJsonTest < ActionDispatch::IntegrationTest
+class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @translation = Moirai::Translation.create(key: "locales.german", locale: "de", value: "Neudeutsch")
   end
 
   # Index action tests
   test "index displays translation files" do
-    get index_url, as: :json
+    get index_url
 
     assert_response :success
-    json_response = JSON.parse(response.body)
-    assert json_response.any? { |file| file["name"] == "de.yml" }
-    assert json_response.any? { |file| file["name"] == "en.yml" }
-    assert json_response.any? { |file| file["name"] == "it.yml" }
+    assert_select "h1", "Translation files"
+    assert_includes response.body, "de.yml"
+    assert_includes response.body, "en.yml"
+    assert_includes response.body, "it.yml"
   end
 
   # Show action tests
   test "show existing translation file" do
-    get translation_file_url("config/locales/en.yml"), as: :json
+    get translation_file_url("config/locales/en.yml")
     assert_response :success
 
-    json_response = JSON.parse(response.body)
-    assert_equal "en", json_response["locale"]
-    assert json_response["translation_keys"].is_a?(Hash)
-    assert json_response["translations"].is_a?(Array)
+    assert_select "h1", "Update translations"
+    assert_select "code", "./config/locales/en.yml"
   end
 
   test "show non-existing translation file" do
-    get translation_file_url("does_not_exist.yml"), as: :json
+    get translation_file_url("does_not_exist.yml")
     assert_response :not_found
   end
 
   # Create action tests
   test "create translation with valid params" do
     translation_count_before = Moirai::Translation.count
-    post translation_files_url, params: {translation: {key: "locales.german", locale: "en", value: "New Translation"}}, as: :json
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "en", value: "New Translation"}}
 
-    assert_response :ok
-    json_response = JSON.parse(response.body)
-    assert_equal "Translation created", json_response["message"]
-    assert_equal "locales.german", json_response["translation"]["key"]
-    assert_equal "New Translation", json_response["translation"]["value"]
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/en.yml")
+    assert_equal "Translation locales.german was successfully created.", flash[:notice]
+    assert_equal Moirai::Translation.last.key, "locales.german"
+    assert_equal Moirai::Translation.last.value, "New Translation"
     assert_equal translation_count_before + 1, Moirai::Translation.count
   end
 
   test "create translation with existing value" do
     translation_count_before = Moirai::Translation.count
 
-    post translation_files_url, params: {translation: {key: "locales.german", locale: "en", value: "German"}}, as: :json
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "en", value: "German"}}
 
     assert_response :unprocessable_entity
-    json_response = JSON.parse(response.body)
-    assert_includes json_response["errors"], "Translation already exists"
+    assert_equal "Translation locales.german already exists.", flash[:alert]
     assert_equal translation_count_before, Moirai::Translation.count
   end
 
   test "create translation with invalid params" do
     translation_count_before = Moirai::Translation.count
 
-    post translation_files_url, params: {translation: {key: "", locale: "", value: ""}}, as: :json
+    post translation_files_url, params: {translation: {key: "", locale: "", value: ""}}
 
     assert_response :unprocessable_entity
-    json_response = JSON.parse(response.body)
-    assert_includes json_response["errors"], "Key can't be blank"
-    assert_includes json_response["errors"], "Locale can't be blank"
-    assert_includes json_response["errors"], "Value can't be blank"
+    assert_equal "Key can't be blank, Locale can't be blank, Value can't be blank", flash[:alert]
     assert_equal translation_count_before, Moirai::Translation.count
   end
 
   # Update action tests
   test "update translation with blank value" do
     count_before = Moirai::Translation.count
-    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: ""}}, as: :json
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: ""}}
 
-    assert_response :ok
-    json_response = JSON.parse(response.body)
-    assert_equal "Translation deleted", json_response["message"]
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/de.yml")
+    assert_equal "Translation locales.german was successfully deleted.", flash[:notice]
     assert_equal count_before - 1, Moirai::Translation.count
   end
 
   test "update translation with non-blank new value" do
-    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: "Hochdeutsch"}}, as: :json
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: "Hochdeutsch"}}
 
-    assert_response :ok
-    json_response = JSON.parse(response.body)
-    assert_equal "Translation updated", json_response["message"]
-    assert_equal "locales.german", json_response["translation"]["key"]
-    assert_equal "Hochdeutsch", json_response["translation"]["value"]
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/de.yml")
+    assert_equal "Translation locales.german was successfully updated.", flash[:notice]
+    assert_equal Moirai::Translation.last.key, "locales.german"
+    assert_equal Moirai::Translation.last.value, "Hochdeutsch"
   end
 
   test "update translation with value from file" do
     count_before = Moirai::Translation.count
-    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: "Deutsch"}}, as: :json
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: "Deutsch"}}
 
-    assert_response :ok
-    json_response = JSON.parse(response.body)
-    assert_equal "Translation deleted", json_response["message"]
+    assert_response :redirect
+    assert_redirected_to translation_file_url("config/locales/de.yml")
+    assert_equal "Translation locales.german was successfully deleted.", flash[:notice]
     assert_equal count_before - 1, Moirai::Translation.count
   end
 
@@ -109,11 +103,9 @@ class TranslationFilesControllerJsonTest < ActionDispatch::IntegrationTest
       locale: "it",
       value: "Italianese")
 
-    post moirai.moirai_open_pr_path, as: :json
+    post moirai.moirai_open_pr_path
 
-    assert_response :ok
-    json_response = JSON.parse(response.body)
-    assert_equal "Pull Request created", json_response["message"]
+    assert_response :found
 
     @pull_request_creator = Moirai::PullRequestCreator.new
 
