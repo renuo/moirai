@@ -71,12 +71,7 @@ module Moirai
       end
 
       if translation_params[:value].blank? && request.format.json?
-        respond_to do |format|
-          format.json do
-            render json: {fallback_translation: get_fallback_translation}
-          end
-        end
-        return
+        return render json: {fallback_translation: get_fallback_translation}
       end
 
       translation = Translation.new(translation_params)
