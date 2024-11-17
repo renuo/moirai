@@ -37,6 +37,12 @@ jobs:
 
       - name: Run system tests
         run: bundle exec rails test:system
+
+      - name: Archive logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: test.log
+          path: test/dummy/log/test.log
   
   
   lint:
