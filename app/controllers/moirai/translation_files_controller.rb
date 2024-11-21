@@ -39,15 +39,14 @@ module Moirai
     def handle_update(translation)
       if translation_params[:value].blank? || translation_same_as_current?
         translation.destroy
-        flash.notice = "Translation #{translation.key} was successfully deleted."
         respond_to do |format|
           format.json do
-            flash.discard
             render json: {
               fallback_translation: get_fallback_translation
             }
           end
           format.html do
+            flash.notice = "Translation #{translation.key} was successfully deleted."
             redirect_to_translation_file(translation.file_path)
           end
         end
