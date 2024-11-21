@@ -1,0 +1,22 @@
+td {
+  height: 100px;
+  width: 200px;
+  vertical-align: top;
+}
+
+form {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+textarea.translation-textarea {
+  width: 100%;
+  height: auto;
+  resize: vertical;
+  min-height: 3em;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+/*# TODO: this isn't coming through */
