@@ -8,6 +8,8 @@ class I18nExtensionsTest < ActiveSupport::TestCase
     table_exists = ActiveRecord::Base.connection.data_source_exists?("moirai_translations")
     Rails.logger.debug("Database connection established: #{ActiveRecord::Base.connected?}")
     Rails.logger.debug("moirai_translations table exists: #{table_exists}")
+    Rails.logger.debug("Original backend is set: #{I18n.original_backend.present?}")
+    Rails.logger.debug(I18n.backend.inspect)
 
     # Ensure the table exists, or raise an error to debug further
     assert table_exists, "The moirai_translations table does not exist in the test database."
