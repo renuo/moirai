@@ -63,6 +63,12 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
     assert_equal translation_count_before, Moirai::Translation.count
   end
 
+  test "create translation with blank value JSON" do
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: ""}}, as: :json
+    assert_response :ok
+    assert_equal "Deutsch", JSON.parse(response.body)["fallback_translation"]
+  end
+
   # Update action tests
   test "update translation with blank value" do
     count_before = Moirai::Translation.count
@@ -72,6 +78,12 @@ class TranslationFilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to translation_file_url("config/locales/de.yml")
     assert_equal "Translation locales.german was successfully deleted.", flash[:notice]
     assert_equal count_before - 1, Moirai::Translation.count
+  end
+
+  test "update translation with blank value JSON" do
+    post translation_files_url, params: {translation: {key: "locales.german", locale: "de", value: ""}}, as: :json
+    assert_response :ok
+    assert_equal "Deutsch", JSON.parse(response.body)["fallback_translation"]
   end
 
   test "update translation with non-blank new value" do
