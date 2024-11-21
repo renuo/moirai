@@ -5,7 +5,7 @@ module I18n
     attr_accessor :original_backend
   end
 
-  def self.translate_to_original(key, locale, **)
+  def self.translate_without_moirai(key, locale, **)
     raise "Original backend is not set" unless original_backend
 
     original_backend.translate(locale, key, **)

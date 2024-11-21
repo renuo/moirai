@@ -10,6 +10,6 @@ class I18nExtensionsTest < ActiveSupport::TestCase
 
     assert_equal 1, Moirai::Translation.count
     assert_equal "Italianese", I18n.t("locales.italian", locale: :de)
-    assert_equal "Italienisch", I18n.translate_to_original("locales.italian", :de)
+    assert_equal "Italienisch", I18n.translate_without_moirai("locales.italian", :de)
   end
 end
