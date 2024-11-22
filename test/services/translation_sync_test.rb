@@ -19,6 +19,7 @@ module Moirai
       Moirai::Translation.create!(locale: "de", key: "locales.italian", value: "Italianese")
 
       assert_equal 1, Moirai::Translation.count
+      assert_equal "Italianese", I18n.t("locales.italian", locale: :de)
 
       modified_de_yaml = {
         de: {
@@ -28,6 +29,8 @@ module Moirai
         }
       }
       File.write(@de_file_path, modified_de_yaml.to_yaml)
+
+      I18n.reload!
 
       # initialize the service here so that we have the correct data
       @translation_sync_service = Moirai::TranslationSync.new

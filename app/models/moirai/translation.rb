@@ -16,16 +16,8 @@ module Moirai
     end
 
     def in_sync_with_file?
-      file_translation = file_value
-      file_translation.present? && file_translation == value
-    end
-
-    def file_value
-      return nil unless file_path
-
-      file_handler = TranslationFileHandler.new
-      file_content = file_handler.parse_file(file_path)
-      file_content[key]
+      translation_without_moirai = I18n.translate_without_moirai(key, locale)
+      translation_without_moirai.present? && translation_without_moirai == value
     end
   end
 end
