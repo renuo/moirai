@@ -1,4 +1,9 @@
-## Unreleased
+## 0.3.0
+
+* Added a method `I18n.translate_without_moirai` ([@oliveranthony17][])
+* Simplified stimulus setup ([@coorasse][])
+* Fixed some setup issues in test environments ([@oliveranthony17][])
+* Show original translation when deleting the whole inline editing content. ([@CuddlyBunion341][])
 
 ## 0.2.0
 
