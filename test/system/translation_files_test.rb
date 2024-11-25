@@ -30,8 +30,11 @@ class TranslationFilesTest < ApplicationSystemTestCase
 
     within find("tr", text: "locales.german") do
       fill_in "translation[value]", with: "Hochdeutsch"
-      find("input[type='submit'][value='Update']", visible: false).execute_script("this.click()")
+      find("input[name='translation[value]']").send_keys(:enter)
     end
+
+    assert_equal "Hochdeutsch", Moirai::Translation.find_by(key: "locales.german", locale: "de").value
+    assert_text "Translation locales.german was successfully created."
   end
 
   def test_update_translation
@@ -42,11 +45,10 @@ class TranslationFilesTest < ApplicationSystemTestCase
 
     within find("tr", text: "locales.german") do
       fill_in "translation[value]", with: "Hochdeutsch"
-      find("input[type='submit'][value='Update']", visible: false).execute_script("this.click()")
+      find("input[name='translation[value]']").send_keys(:enter)
     end
 
     assert_equal "Hochdeutsch", Moirai::Translation.find_by(key: "locales.german", locale: "en").value
-
     assert_text "Translation locales.german was successfully updated."
   end
 end
