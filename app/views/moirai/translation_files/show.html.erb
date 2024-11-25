@@ -30,8 +30,7 @@
                          method: :post do |f| %>
               <%= f.hidden_field :key %>
               <%= f.hidden_field :locale %>
-              <%= f.text_area :value, class: 'translation-textarea' %>
-              <%= f.submit 'Update', style: 'display: none;' %>
+              <%= f.text_field :value, class: 'translation-textarea' %>
             <% end %>
           </td>
           <td>
