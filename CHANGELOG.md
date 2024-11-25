@@ -5,6 +5,8 @@
 * Fixed some setup issues in test environments ([@oliveranthony17][])
 * Show original translation when deleting the whole inline editing content. ([@CuddlyBunion341][])
 
+* Support for html translations ([@CuddlyBunion341][])
+=======
 ## 0.2.0
 
 * Support for strings coming from gems ([@coorasse][])
