@@ -28,23 +28,25 @@ class TranslationFilesTest < ApplicationSystemTestCase
   def test_create_translation
     visit moirai_translation_file_path(Digest::SHA256.hexdigest(Rails.root.join("config/locales/de.yml").to_s))
 
-    within "#moirai-de_locales_german" do
+    within find("tr", text: "locales.german") do
       fill_in "translation[value]", with: "Hochdeutsch"
-      click_on "Update"
+      find("input[type='submit'][value='Update']", visible: false).execute_script("this.click()")
     end
   end
 
   def test_update_translation
-    Moirai::Translation.create!(key: "greeting", locale: "en", value: "Hi")
+    Moirai::Translation.create!(key: "locales.german", locale: "en", value: "German")
     file_id = Digest::SHA256.hexdigest(Rails.root.join("config/locales/en.yml").to_s)
 
     visit moirai_translation_file_path(file_id)
 
-    within "#moirai-en_locales_german" do
+    within find("tr", text: "locales.german") do
       fill_in "translation[value]", with: "Hochdeutsch"
-      click_on "Update"
+      find("input[type='submit'][value='Update']", visible: false).execute_script("this.click()")
     end
 
-    assert_text "Translation greeting was successfully updated."
+    assert_equal "Hochdeutsch", Moirai::Translation.find_by(key: "locales.german", locale: "en").value
+
+    assert_text "Translation locales.german was successfully updated."
   end
 end
