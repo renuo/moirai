@@ -1,3 +1,7 @@
+## 0.3.1
+
+* Fixes a problem when running a rake command and no database exists yet using postgres. ([@coorasse][])
+
 ## 0.3.0
 
 * Added a method `I18n.translate_without_moirai` ([@oliveranthony17][])
