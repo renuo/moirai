@@ -12,6 +12,7 @@ gem "stimulus-rails"
 group :development, :test do
   gem "puma"
   gem "sqlite3"
+  gem "pg"
   gem "rake"
   gem "dotenv"
   gem "minitest"

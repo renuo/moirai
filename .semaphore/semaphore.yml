@@ -1,0 +1,50 @@
+version: "v1.0"
+name: moirai
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+auto_cancel:
+  running:
+    when: "true"
+
+blocks:
+  - name: tests
+    execution_time_limit:
+      minutes: 10
+    task:
+      secrets:
+        - name: moirai
+      prologue:
+        commands:
+          - checkout --use-cache
+          - cache restore
+          - bundle config set path 'vendor/bundle'
+          - bundle install -j 4
+          - cache store
+      jobs:
+        - name: linter
+          commands:
+            - bundle exec standardrb
+        - name: tests sqlite
+          env_vars:
+            - name: TARGET_DB
+              value: sqlite
+            - name: RAILS_ENV
+              value: test
+          commands:
+            - bin/rails db:create db:schema:load
+            - bin/check
+        - name: tests postgres
+          env_vars:
+            - name: TARGET_DB
+              value: postgres
+            - name: RAILS_ENV
+              value: test
+          commands:
+            - sem-service start postgres 14
+            - bin/rails db:create db:schema:load
+            - bin/check
+promotions:
+  - name: main
+    pipeline_file: main-deploy.yml

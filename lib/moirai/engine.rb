@@ -10,7 +10,14 @@ module Moirai
 
     config.after_initialize do
       I18n.original_backend = I18n.backend
-      if ActiveRecord::Base.connection.data_source_exists?("moirai_translations") || ENV["RAILS_ENV"] == "test"
+      table_created =
+        begin
+          ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::SQLite3Adapter) ||
+            ActiveRecord::Base.connection.table_exists?("moirai_translations")
+        rescue ActiveRecord::NoDatabaseError
+          false
+        end
+      if table_created
         I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
       else
         Rails.logger.warn("moirai disabled: tables have not been generated yet.")
