@@ -12,3 +12,5 @@ en:
         nested:
           value: Click me
           only_english: Only English
+  email:
+    welcome: Welcome

@@ -12,3 +12,5 @@ de:
         nested:
           value: Klick mich
           only_german: Nur Deutsch
+  email:
+    welcome: Willkommen
