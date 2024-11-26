@@ -7,5 +7,5 @@ require "moirai/engine"
 require "moirai/pull_request_creator"
 
 module Moirai
-  # Your code goes here...
+  mattr_accessor :enable_inline_editing
 end

@@ -1,3 +1,15 @@
+## 0.4.0 - Breaking Changes ⚠️
+
+* Inline editing is now disabled by default. To enable it, specify the following in `application.rb`:
+
+```ruby
+config.moirai.enable_inline_editing = ->(params:) { your_options_here }
+```
+
+move in here the conditions you had previously defined in the helper.
+
+* Moirai now works also in emails. That's why we have a breaking change.
+
 ## 0.3.1
 
 * Fixes a problem when running a rake command and no database exists yet using postgres. ([@coorasse][])
