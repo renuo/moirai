@@ -21,7 +21,6 @@ blocks:
           - cache restore
           - bundle config set path 'vendor/bundle'
           - bundle install -j 4
-
           - cache store
       jobs:
         - name: linter
