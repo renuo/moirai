@@ -4,8 +4,8 @@ module ActionView::Helpers::TranslationHelper # rubocop:disable Lint/ConstantDef
   def translate(key, **)
     value = original_translate(key, **)
 
-    is_missing_translation = value.include?('class="translation_missing"')
-    if value.is_a?(String) && is_missing_translation
+    is_missing_translation = value.is_a?(String) && value.include?('class="translation_missing"')
+    if is_missing_translation
       value = extract_inner_content(value)
     end
 
@@ -25,7 +25,7 @@ module ActionView::Helpers::TranslationHelper # rubocop:disable Lint/ConstantDef
   alias_method :t, :translate
 
   def moirai_edit_enabled?
-    Moirai.enable_inline_editing.call(params: params || {})
+    Moirai.enable_inline_editing.call(params: defined?(params) ? params : {})
   end
 
   private

@@ -1,3 +1,7 @@
+## 0.4.1
+
+* Fix bug when the string is not a string, but a boolean
+
 ## 0.4.0 - Breaking Changes ⚠️
 
 * Inline editing is now disabled by default. To enable it, specify the following in `application.rb`:
