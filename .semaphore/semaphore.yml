@@ -42,7 +42,7 @@ blocks:
             - name: RAILS_ENV
               value: test
           commands:
-            - sem-service start postgres 14
+            - sem-service start postgres 14 --username=semaphore
             - bin/rails db:create db:schema:load
             - bin/check
 promotions:
