@@ -12,7 +12,8 @@ module Moirai
       I18n.original_backend = I18n.backend
       table_created =
         begin
-          ActiveRecord::Base.connection.table_exists?("moirai_translations")
+          ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::SQLite3Adapter) ||
+            ActiveRecord::Base.connection.table_exists?("moirai_translations")
         rescue ActiveRecord::NoDatabaseError
           false
         end
