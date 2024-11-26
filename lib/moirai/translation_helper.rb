@@ -25,7 +25,7 @@ module ActionView::Helpers::TranslationHelper # rubocop:disable Lint/ConstantDef
   alias_method :t, :translate
 
   def moirai_edit_enabled?
-    Moirai.enable_inline_editing.call(params: defined?(params) ? params : {})
+    Moirai.enable_inline_editing.call(params: defined?(params) ? (params || {}) : {})
   end
 
   private

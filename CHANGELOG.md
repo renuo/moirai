@@ -1,3 +1,7 @@
+## 0.4.2
+
+* Fix bug when the params is defined but is `nil`
+
 ## 0.4.1
 
 * Fix bug when the string is not a string, but a boolean
