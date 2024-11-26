@@ -3,6 +3,7 @@ on: [push]
 
 env:
   RAILS_ENV: test
+  TARGET_DB: sqlite
   PGHOST: localhost
   PGUSER: postgres
   MOIRAI_GITHUB_REPO_NAME: ${{ secrets.MOIRAI_GITHUB_REPO_NAME }}
