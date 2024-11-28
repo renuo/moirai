@@ -50,21 +50,21 @@ on the application.
 
 ### Inline editing
 
-By default, inline editing is disabled. To enable it, set the `moirai=true` query parameter in the URL.
-
-If you want to only allow specific users to perform inline editing, you can override the `moirai_edit_enabled?` method
-in your application helper.
+By default, inline editing is disabled. To enable it, specify the following in `application.rb`:
 
 ```ruby
-
-module ApplicationHelper
-  def moirai_edit_enabled?
-    params[:moirai] == "true" && current_user&.admin?
-  end
-end
+config.moirai.enable_inline_editing = ->(params:) { params[:moirai] == 'true' }
 ```
 
-You also need to have the moirai_translations_controller.js Stimulus Controller initialized.
+If you set `moirai=true` query parameter in the URL, inline editing will appear in your page.
+
+You probably want to only allow specific users to perform inline editing, this is an example of how you can do it:
+
+```ruby
+config.moirai.enable_inline_editing = ->(params:) { (params[:moirai] == 'true') && current_user&.admin? }
+```
+
+You also need to have the moirai_translations_controller.js Stimulus Controller initialized. Read below how to:
 
 #### Importmap
 

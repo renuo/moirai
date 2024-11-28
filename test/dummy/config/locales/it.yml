@@ -12,3 +12,6 @@ it:
         nested:
           value: Cliccami
           only_italian: Solo italiano
+  email:
+    welcome: Benvenuto
+  option_no: No

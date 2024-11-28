@@ -26,5 +26,7 @@ module Dummy
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
+
+    config.moirai.enable_inline_editing = ->(params:) { params[:moirai] == "true" }
   end
 end
