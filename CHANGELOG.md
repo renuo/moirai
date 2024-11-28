@@ -1,10 +1,14 @@
+## 0.4.3
+
+* Do not initialize moirai if we don't have a database connection. ([@coorasse][])
+
 ## 0.4.2
 
-* Fix bug when the params is defined but is `nil`
+* Fix bug when the params is defined but is `nil`. ([@coorasse][])
 
 ## 0.4.1
 
-* Fix bug when the string is not a string, but a boolean
+* Fix bug when the string is not a string, but a boolean. ([@coorasse][])
 
 ## 0.4.0 - Breaking Changes ⚠️
 
@@ -16,7 +20,7 @@ config.moirai.enable_inline_editing = ->(params:) { your_options_here }
 
 move in here the conditions you had previously defined in the helper.
 
-* Moirai now works also in emails. That's why we have a breaking change.
+* Moirai now works also in emails. That's why we have a breaking change. ([@coorasse][])
 
 ## 0.3.1
 
