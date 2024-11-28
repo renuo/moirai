@@ -6,6 +6,11 @@ require "moirai/translation_helper"
 class I18nExtensionsTest < ActiveSupport::TestCase
   include ActionView::Helpers::TranslationHelper
 
+  before do
+    Rails.cache.clear
+    I18n.reload!
+  end
+
   test "it correctly translates using .translate and .translate_without_moirai" do
     assert_equal "Italienisch", I18n.t("locales.italian", locale: :de)
 
