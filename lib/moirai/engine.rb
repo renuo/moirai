@@ -46,5 +46,9 @@ module Moirai
         require "moirai/translation_helper"
       end
     end
+
+    initializer "moirai.assets" do |app|
+      app.config.assets.precompile += %w[ moirai/application.css ]
+    end
   end
 end

@@ -24,8 +24,6 @@ module Moirai
         end
       end
 
-      private
-
       def using_js_bundling?
         Rails.root.join("app/javascript/controllers").exist?
       end
