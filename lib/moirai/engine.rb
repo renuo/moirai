@@ -48,7 +48,7 @@ module Moirai
     end
 
     initializer "moirai.assets" do |app|
-      app.config.assets.precompile += %w[ moirai/application.css ]
+      app.config.assets.precompile += %w[moirai/application.css]
     end
   end
 end
