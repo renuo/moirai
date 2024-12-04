@@ -8,6 +8,10 @@ module I18n
   def self.translate_without_moirai(key, locale, **)
     raise "Original backend is not set" unless original_backend
 
-    original_backend.translate(locale, key, **)
+    begin
+      original_backend.translate(locale, key, **)
+    rescue
+      nil
+    end
   end
 end
