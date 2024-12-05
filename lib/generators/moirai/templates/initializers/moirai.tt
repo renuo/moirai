@@ -1,0 +1,5 @@
+# The values disaplayed here are the default ones. Change them to fit your needs.
+Moirai.configure do |config|
+  ## == Routing ==
+  config.root_path = '/moirai'
+end

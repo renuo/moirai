@@ -1,9 +1,10 @@
-<span 
+<span
   contenteditable
   data-action="blur->moirai-translation#submit click->moirai-translation#click"
-  style="outline: 1px solid #1d9f74; min-width: 30px; display: inline-block; <%= 'color: red;' if is_missing_translation %>" 
+  style="outline: 1px solid #1d9f74; min-width: 30px; display: inline-block; <%= 'color: red;' if is_missing_translation %>"
   data-moirai-translation-key-value="<%= key %>"
   data-moirai-translation-locale-value="<%= locale %>"
-  data-controller="moirai-translation">
+  data-controller="moirai-translation"
+  data-moirai-translation-root-path-value="<%= Moirai.configuration.root_path %>">
   <%= value.to_s.gsub("<", "&lt;").gsub(">", "&gt;").html_safe %>
 </span>
