@@ -29,7 +29,12 @@ module Moirai
       end
 
       def mount_engine
-        route 'mount Moirai::Engine => "/moirai", as: "moirai"'
+        route "mount Moirai::Engine, at: Moirai.configuration.root_path, as: 'moirai'"
+      end
+
+      def add_initializer
+        say "Copying Moirai initializer"
+        template "initializers/moirai.tt", "config/initializers/moirai.rb"
       end
 
       private
