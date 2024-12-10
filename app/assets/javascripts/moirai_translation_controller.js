@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class MoiraiTranslationController extends Controller {
   static values = {
+    rootPath: { type: String, default: '/moirai' },
     key: String,
     locale: String
   }
@@ -13,7 +14,7 @@ export default class MoiraiTranslationController extends Controller {
   submit(event) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content
 
-    fetch('/moirai/translation_files', {
+    fetch(`${this.rootPathValue}/translation_files`, {
       method: 'POST',
       headers: {
         'X-CSRF-Token': csrfToken,

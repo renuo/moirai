@@ -41,6 +41,15 @@ bin/rails db:migrate
 
 ## Usage
 
+### Mount path
+
+By default, Moirai is mounted under `/moirai`. You can change it by specifying the `root_path` option in `config/initializers/moirai.rb`:
+
+```ruby
+# config/initializers/moirai.rb
+config.root_path = '/my_translations'
+```
+
 ### How to change translations
 
 If you mounted Moirai under "/moirai", head there and you will find a list of all the files containing texts that can be
