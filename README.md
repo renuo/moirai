@@ -50,7 +50,6 @@ By default, Moirai is mounted under `/moirai`. You can change it by specifying t
 config.root_path = '/my_translations'
 ```
 
-
 ### How to change translations
 
 If you mounted Moirai under "/moirai", head there and you will find a list of all the files containing texts that can be
