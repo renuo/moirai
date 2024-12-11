@@ -30,6 +30,7 @@ module Moirai
       if table_created
         I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Moirai.new, I18n.backend)
         Rails.logger.info("moirai has been enabled.")
+        Moirai::TranslationSync.new.synchronize
       else
         Rails.logger.warn("moirai disabled: tables have not been generated yet.")
       end

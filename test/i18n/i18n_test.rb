@@ -7,6 +7,9 @@ class I18nExtensionsTest < ActiveSupport::TestCase
   include ActionView::Helpers::TranslationHelper
 
   test "it correctly translates using .translate and .translate_without_moirai" do
+    Rails.cache.clear
+    I18n.reload!
+
     assert_equal "Italienisch", I18n.t("locales.italian", locale: :de)
 
     Moirai::Translation.create!(locale: "de", key: "locales.italian", value: "Italianese")
