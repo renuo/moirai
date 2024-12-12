@@ -1,3 +1,7 @@
+## 0.4.4
+
+* Allow to configure the root_path of moirai
+
 ## 0.4.3
 
 * Do not initialize moirai if we don't have a database connection. ([@coorasse][])
