@@ -113,12 +113,13 @@ Then run `bundle install`.
 You will need a Personal Access Token (PAT) with the `Content - Write` permission to allow Octokit to create branches
 and pull requests.
 
-- Go to GitHub Token Settings.
-- Click Generate New Token.
-- Give your token a name (e.g., “Moirai”).
-- Under Scopes, select:
-    - repo (for full control of private repositories, including writing content).
-    - content (for read/write access to code, commit statuses, and pull requests).
+- Go to [GitHub Token Settings](https://github.com/settings/personal-access-tokens/).
+- Click Generate New Token in Fine Grained Tokens.
+- Give your token a name (e.g., "moirai").
+- Under Repository Permissions, select:
+    - Actions - Read/Write
+    - Contents - Read/Write
+    - Pull Request - Read/Write
 - Generate the token and copy it immediately as it will be shown only once.
 
 #### 3. Set Up Environment Variables
