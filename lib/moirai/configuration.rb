@@ -3,7 +3,7 @@ module Moirai
     attr_accessor :root_path
 
     def initialize
-      @root_path = '/moirai'
+      @root_path = "/moirai"
     end
   end
 
