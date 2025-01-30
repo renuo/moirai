@@ -1,3 +1,7 @@
+## 0.4.5
+
+* Fixes issue when inline editing is disabled. ([@nicogaldamez][])
+
 ## 0.4.4
 
 * Allow to configure the root_path of moirai
@@ -62,3 +66,5 @@ move in here the conditions you had previously defined in the helper.
 [@oliveranthony17]: https://github.com/oliveranthony17
 
 [@CuddlyBunion341]: https://github.com/CuddlyBunion341
+
+[@nicogaldamez]: https://github.com/nicogaldamez
