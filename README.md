@@ -47,7 +47,7 @@ By default, Moirai is mounted under `/moirai`. You can change it by specifying t
 
 ```ruby
 # config/initializers/moirai.rb
-config.root_path = '/my_translations'
+config.root_path = "/my_translations"
 ```
 
 ### How to change translations
@@ -62,7 +62,7 @@ on the application.
 By default, inline editing is disabled. To enable it, specify the following in `application.rb`:
 
 ```ruby
-config.moirai.enable_inline_editing = ->(params:) { params[:moirai] == 'true' }
+config.moirai.enable_inline_editing = ->(params:) { params[:moirai] == "true" }
 ```
 
 If you set `moirai=true` query parameter in the URL, inline editing will appear in your page.
@@ -70,7 +70,7 @@ If you set `moirai=true` query parameter in the URL, inline editing will appear 
 You probably want to only allow specific users to perform inline editing, this is an example of how you can do it:
 
 ```ruby
-config.moirai.enable_inline_editing = ->(params:) { (params[:moirai] == 'true') && current_user&.admin? }
+config.moirai.enable_inline_editing = ->(params:) { (params[:moirai] == "true") && current_user&.admin? }
 ```
 
 You also need to have the moirai_translations_controller.js Stimulus Controller initialized. Read below how to:
@@ -103,7 +103,7 @@ You will also need to create a **Personal Access Token** on GitHub, and configur
 First, add Octokit to your project’s Gemfile:
 
 ```
-gem 'octokit'
+gem "octokit"
 ```
 
 Then run `bundle install`.
@@ -169,7 +169,7 @@ See the following example:
 
 ```ruby
 authenticated :user, lambda { |u| u.role == "admin" } do
-  mount Moirai::Engine => '/moirai', as: 'moirai'
+  mount Moirai::Engine => "/moirai", as: "moirai"
 end
 ```
 
@@ -181,17 +181,12 @@ end
     cd moirai
     ```
 
-2. Run the setup script to install dependencies:
+2. Run the setup script to install dependencies and prepare the env variables:
     ```bash
     bin/setup
     ```
-
-3. Copy the example environment variables file to create your own `.env` file:
-    ```bash
-    cp .env.example .env
-    ```
-
-4. Set your environment variables using the newly created `.env` file.
+   
+3. Set your environment variables using the newly created `.env` file.
 
 You will need a repository to test against and a token. Generate a new Fine-GRained Personal access token and give the
 necessary permissions to your repository.
