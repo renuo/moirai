@@ -18,9 +18,7 @@ Gem::Specification.new do |spec|
   spec.metadata["changelog_uri"] = "https://github.com/renuo/moirai/CHANGELOG.md"
   spec.metadata["steep_types"] = "sig"
 
-  spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|docs)/}) || f.end_with?(".gem") }
-  end
+  spec.files = Dir["{app,config,lib}/**/*", "CHANGELOG.md", "README.md"]
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
