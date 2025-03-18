@@ -43,7 +43,8 @@ bin/rails db:migrate
 
 ### Mount path
 
-By default, Moirai is mounted under `/moirai`. You can change it by specifying the `root_path` option in `config/initializers/moirai.rb`:
+By default, Moirai is mounted under `/moirai`. You can change it by specifying the `root_path` option in
+`config/initializers/moirai.rb`:
 
 ```ruby
 # config/initializers/moirai.rb
@@ -185,10 +186,12 @@ end
     ```bash
     bin/setup
     ```
-   
+
 3. Set your environment variables using the newly created `.env` file.
 
-You will need a repository to test against and a token. Generate a new Fine-GRained Personal access token and give the
+You will need a repository to test against and a token. The repository is just a dummy repo. It does not need anything
+special.
+Generate a new Fine-Grained Personal access token and give the
 necessary permissions to your repository.
 See the image below as an example:
 
@@ -211,6 +214,7 @@ See the image below as an example:
 * Support for count variants
 * Better inline editing tool
 * Support for fallbacks: it should detect when a fallback string is in use and prevent attempts to override its value.
+* Support inline editing when translation is used as a value of an attribute
 
 ## License
 

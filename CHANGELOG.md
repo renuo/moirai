@@ -1,3 +1,8 @@
+## Unreleased
+
+* Allows to access `current_user` and other controller available methods in the `enable_inline_editing` function. ([@coorasse][])
+* Improved project setup.  ([@simon-isler][])
+
 ## 0.4.5
 
 * Fixes issue when inline editing is disabled. ([@nicogaldamez][])
@@ -68,3 +73,5 @@ move in here the conditions you had previously defined in the helper.
 [@CuddlyBunion341]: https://github.com/CuddlyBunion341
 
 [@nicogaldamez]: https://github.com/nicogaldamez
+
+[@simon-isler]:  https://github.com/simon-isler
