@@ -12,7 +12,8 @@ module Moirai
 
     def self.on_sqlite?
       defined?(ActiveRecord::ConnectionAdapters::SQLite3Adapter) &&
-        ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::SQLite3Adapter)
+        ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::SQLite3Adapter) &&
+        ActiveRecord::Base.connection.table_exists?("moirai_translations")
     end
 
     def self.on_postgres?
