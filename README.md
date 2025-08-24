@@ -202,6 +202,10 @@ See the image below as an example:
     bin/check
     ```
 
+    > ⚠️ **Note:** The first time you run the tests, one test will fail because the Italian translation file is missing by default in the dummy app.
+    > But don't worry, a pull request should now be created on your repository with the missing translations.
+    > After merging the pull request, all the tests should pass.
+
 6. To view the engine in a dummy app:
     ```bash
     bin/rails s
