@@ -39,7 +39,7 @@ blocks:
           - checkout --use-cache
           - cache restore
           - bundle config set path 'vendor/bundle'
-          - bundle install -j 4
+          - bundle install
           - cache store
       jobs:
         - name: tests sqlite
@@ -54,8 +54,7 @@ blocks:
   - name: tests postgres
     execution_time_limit:
       minutes: 10
-    dependencies:
-      - 'tests sqlite'
+    dependencies: []
     task:
       secrets:
         - name: moirai
@@ -64,7 +63,7 @@ blocks:
           - checkout --use-cache
           - cache restore
           - bundle config set path 'vendor/bundle'
-          - bundle install -j 4
+          - bundle install
           - cache store
       jobs:
         - name: tests postgres
