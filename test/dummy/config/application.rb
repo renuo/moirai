@@ -28,5 +28,8 @@ module Dummy
     config.i18n.fallbacks = true
 
     config.moirai.enable_inline_editing = ->(params:) { params[:moirai] == "true" }
+
+    MissionControl::Jobs.http_basic_auth_user = "dev"
+    MissionControl::Jobs.http_basic_auth_password = "secret"
   end
 end
