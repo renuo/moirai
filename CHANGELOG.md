@@ -1,7 +1,10 @@
 ## Unreleased
 
+## 0.4.6
+
 * Allows to access `current_user` and other controller available methods in the `enable_inline_editing` function. ([@coorasse][])
 * Improved project setup.  ([@simon-isler][])
+* Various bug fixes
 
 ## 0.4.5
 
