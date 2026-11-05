@@ -2,8 +2,8 @@ version: "v1.0"
 name: moirai
 agent:
   machine:
-    type: e1-standard-2
-    os_image: ubuntu2004
+    type: f1-standard-2
+    os_image: ubuntu2404
 auto_cancel:
   running:
     when: "true"
@@ -19,6 +19,7 @@ blocks:
       prologue:
         commands:
           - checkout --use-cache
+          - sem-version ruby $(cat .ruby-version) -f
           - cache restore
           - bundle config set path 'vendor/bundle'
           - bundle install -j 4
@@ -26,7 +27,7 @@ blocks:
       jobs:
         - name: linter
           commands:
-            - bundle exec standardrb
+            - bin/fastcheck
   - name: tests sqlite
     execution_time_limit:
       minutes: 10
@@ -37,6 +38,7 @@ blocks:
       prologue:
         commands:
           - checkout --use-cache
+          - sem-version ruby $(cat .ruby-version) -f
           - cache restore
           - bundle config set path 'vendor/bundle'
           - bundle install
@@ -61,6 +63,7 @@ blocks:
       prologue:
         commands:
           - checkout --use-cache
+          - sem-version ruby $(cat .ruby-version) -f
           - cache restore
           - bundle config set path 'vendor/bundle'
           - bundle install
@@ -77,5 +80,7 @@ blocks:
             - bin/rails db:create db:schema:load
             - bin/check
 promotions:
-  - name: main
-    pipeline_file: main-deploy.yml
+  - name: release
+    pipeline_file: release.yml
+    auto_promote:
+      when: "result = 'passed' and tag =~ '^[0-9]+[.][0-9]+[.][0-9]+$'"

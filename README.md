@@ -211,6 +211,21 @@ See the image below as an example:
     bin/rails s
     ```
 
+## Release
+
+1. Bump the version in `lib/moirai/version.rb`, update `CHANGELOG.md` and commit to `main`.
+1. Tag the commit with the bare version and push the tag:
+
+   ```sh
+   git tag -a 1.2.3 -m 1.2.3
+   git push origin 1.2.3
+   ```
+
+1. Create a GitHub release for the tag with the release notes.
+
+Semaphore runs the tests on the tag and, when they pass, promotes the `release` pipeline, which pushes the gem to
+[rubygems.org](https://rubygems.org). It fails when the tag does not match the gem version.
+
 ## TODO
 
 * Support for HTML

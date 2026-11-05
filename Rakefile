@@ -3,6 +3,7 @@
 require "bundler/setup"
 require "bundler/gem_tasks"
 require "rake/testtask"
+Rake::Task["release"].clear
 
 APP_RAKEFILE = File.expand_path("test/dummy/Rakefile", __dir__)
 load "rails/tasks/engine.rake"
