@@ -21,6 +21,9 @@ group :development, :test do
   gem "better_errors"
   gem "binding_of_caller"
   gem "sprockets-rails"
+
+  gem "solid_queue"
+  gem "mission_control-jobs"
 end
 
 group :test do

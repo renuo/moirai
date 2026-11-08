@@ -1,0 +1,4 @@
+development:
+  create_pull_requests:
+    class: Moirai::CreatePullRequestJob
+    schedule: every 10 minutes

@@ -14,8 +14,8 @@ class Moirai::PullRequestCreator
     @github_repository = github_client.repo(github_repo_name)
   end
 
-  # @param changes Array[Moirai::Change]
-  def create_pull_request(changes)
+  def create_pull_request
+    changes = Moirai::TranslationDumper.new.call
     @branch_name = "#{BRANCH_PREFIX}#{Time.current.strftime("%F-%H-%M-%S")}-#{rand(1000..9999)}"
     default_branch = github_repository.default_branch
 

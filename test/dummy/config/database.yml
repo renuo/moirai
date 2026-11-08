@@ -1,4 +1,4 @@
-<% def database_name_from(name); (ENV["TARGET_DB"] == 'sqlite') ? "db/#{name}.sqlite3" : name; end %>
+<% def database_name_from(name); (ENV["TARGET_DB"] == 'postgres') ? name : "db/#{name}.sqlite3"; end %>
 
 <% if ENV["TARGET_DB"] == "sqlite" %>
 default: &default
@@ -13,13 +13,27 @@ default: &default
 <% end %>
 
 development:
-  <<: *default
-  database: <%= database_name_from("development") %>
+  primary:
+    <<: *default
+    database: <%= database_name_from("development") %>
+  queue:
+    <<: *default
+    database: <%= database_name_from("development_queue") %>
+    migrations_paths: test/dummy/db/queue_migrate
 
 test:
-  <<: *default
-  database: <%= database_name_from("test") %>
+  primary:
+    <<: *default
+    database: <%= database_name_from("test") %>
+  queue:
+    <<: *default
+    database: <%= database_name_from("test_queue") %>
+    migrations_paths: test/dummy/db/queue_migrate
 
 production:
-  <<: *default
-  database: <%= database_name_from("production") %>
+  primary:
+    <<: *default
+    database: <%= database_name_from("production") %>
+  queue:
+    <<: *default
+    database: <%= database_name_from("production_queue") %>
